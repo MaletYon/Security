@@ -1,0 +1,179 @@
+% ==============================================================================
+% Fichier     : Cours.tex
+% Titre       : Sécurité Informatique — Fil Conducteur du Cours
+% Auteur      : MINKA MI NGUIDJOÏ Thierry Emmanuel
+%               Sr-Eng, Sr-Auditor, GRC Expert
+% Institution : Département de Génie Informatique
+%               École Nationale Supérieure Polytechnique (ENSPY)
+%               Université de Yaoundé~I
+% Niveau      : Humanités Numériques, Niveau~3 (Licence 3)
+% Année       : 2023--2024
+% Compilateur : XeLaTeX ou pdfLaTeX + Biber (Overleaf)
+% ==============================================================================
+
+\documentclass[12pt, a4paper, twoside, openright]{memoir}
+
+% --- Feuille de style commune ---
+\usepackage{Style_cours}
+
+% ==============================================================================
+% MÉTADONNÉES PDF
+% ==============================================================================
+\hypersetup{
+    pdftitle  = {Sécurité Informatique},
+    pdfauthor = {MINKA MI NGUIDJOÏ Thierry Emmanuel},
+    pdfsubject= {Cours de Sécurité Informatique — Niveau Licence 3, ENSPY},
+}
+
+% ==============================================================================
+% EN-TÊTES ET PIEDS DE PAGE
+% ==============================================================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\small\textcolor{CouleurPrimaire}{\textbf{Sécurité Informatique}}}
+\fancyhead[RO]{\small\textcolor{CouleurPrimaire}{\nouppercase{\leftmark}}}
+\fancyhead[RE,LO]{\small\textcolor{CouleurAccent}{\textbf{ENSPY --- UY~I}}}
+\fancyfoot[C]{\small\textcolor{gray}{\thepage}}
+\fancyfoot[LE]{\small\textcolor{gray}{Thierry MINKA, Sr-Eng, Sr-Auditor, GRC Expert}}
+\fancyfoot[RO]{\small\textcolor{gray}{Année académique 2023--2024}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.2pt}
+
+% ==============================================================================
+% STYLE DE PAGE DE CHAPITRE
+% ==============================================================================
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyfoot[C]{\small\textcolor{gray}{\thepage}}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+% ==============================================================================
+% DÉBUT DU DOCUMENT
+% ==============================================================================
+\begin{document}
+
+% ------------------------------------------------------------------------------
+% PAGE DE TITRE
+% ------------------------------------------------------------------------------
+\begin{titlingpage}
+\begin{tikzpicture}[remember picture, overlay]
+  % Bande supérieure
+  \fill[CouleurPrimaire]
+    (current page.north west) rectangle
+    ([yshift=-3.5cm]current page.north east);
+  % Filet doré
+  \fill[CouleurAccent]
+    ([yshift=-3.5cm]current page.north west) rectangle
+    ([yshift=-3.8cm]current page.north east);
+  % Bande inférieure
+  \fill[CouleurPrimaire]
+    (current page.south west) rectangle
+    ([yshift=2.5cm]current page.south east);
+  \fill[CouleurAccent]
+    ([yshift=2.5cm]current page.south west) rectangle
+    ([yshift=2.8cm]current page.south east);
+\end{tikzpicture}
+
+\vspace*{0.8cm}
+
+% --- Bloc institutionnel bilingue ---
+\begin{center}
+  {\small\textbf{\textcolor{white}{REPUBLIQUE DU CAMEROUN \quad --- \quad REPUBLIC OF CAMEROON}}}\\[0.15cm]
+  {\small\textcolor{white}{Paix - Travail - Patrie \quad --- \quad Peace - Work - Fatherland}}\\[0.3cm]
+  \textcolor{CouleurAccent}{\rule{12cm}{0.5pt}}\\[0.3cm]
+  {\small\textcolor{white}{Université de Yaoundé~I \quad|\quad University of Yaounde~I}}\\
+  {\small\textcolor{white}{École Nationale Supérieure Polytechnique \quad|\quad National Advanced School of Engineering}}\\[0.2cm]
+  \textcolor{CouleurAccent}{\rule{12cm}{0.5pt}}\\[0.2cm]
+  {\small\textsc{\textcolor{white}{Département de Génie Informatique \quad|\quad Computer Sciences Department}}}
+\end{center}
+
+\vspace{1.5cm}
+
+\begin{center}
+  {\LARGE\bfseries\textcolor{CouleurPrimaire}{HUMANITÉS NUMÉRIQUES --- NIVEAU 3}}\\[0.4cm]
+  \textcolor{CouleurAccent}{\rule{10cm}{1pt}}\\[0.5cm]
+  {\Huge\bfseries\textcolor{CouleurPrimaire}{SÉCURITÉ INFORMATIQUE}}\\[0.3cm]
+  {\Large\textcolor{CouleurPrimaire}{Fil Conducteur du Cours}}\\[0.5cm]
+  \textcolor{CouleurAccent}{\rule{10cm}{1pt}}
+\end{center}
+
+\vspace{2.5cm}
+
+\begin{center}
+  {\large\textit{Par :}}\\[0.4cm]
+  {\Large\bfseries\textcolor{CouleurPrimaire}{MINKA MI NGUIDJOÏ Thierry Emmanuel}}\\[0.2cm]
+  {\normalsize Sr-Eng \;|\; Sr-Auditor \;|\; GRC Expert}\\[0.1cm]
+  {\normalsize CISA \;|\; CISM \;|\; CGEIT \;|\; CRISC \;|\; CDPSE}\\[0.4cm]
+  {\small\textit{Chercheur, Laboratoire LIMSI — Université de Yaoundé~I}}\\
+  {\small\textit{Doctorant sous la direction du Pr Flavien Serge Mani Onana}}\\
+  {\small\textit{et du Pr Thomas Djotio Ndié}}
+\end{center}
+
+\vfill
+
+\begin{center}
+  \textcolor{CouleurAccent}{\rule{10cm}{0.5pt}}\\[0.3cm]
+  {\large\textbf{\textcolor{CouleurPrimaire}{Année académique 2023--2024}}}
+\end{center}
+
+\vspace{1.2cm}
+\end{titlingpage}
+
+% ------------------------------------------------------------------------------
+% PAGES PRÉLIMINAIRES
+% ------------------------------------------------------------------------------
+\frontmatter
+\tableofcontents
+\clearpage
+
+\input{chapitres/00_introduction}
+
+% ------------------------------------------------------------------------------
+% CORPS DU COURS — 9 LIVRES
+% ------------------------------------------------------------------------------
+\mainmatter
+
+% ---- Livre I : Définitions, Concepts et Bases --------------------------------
+\part{Définitions, Concepts et Bases pour le Cours}
+\input{chapitres/01_definitions_concepts}
+
+% ---- Livre II : Security and Risk Management ---------------------------------
+\part{Security and Risk Management}
+\input{chapitres/02_security_risk_management}
+
+% ---- Livre III : Sécurité des Actifs -----------------------------------------
+\part{Sécurité des Actifs}
+\input{chapitres/03_securite_actifs}
+
+% ---- Livre IV : Ingénierie et Architecture de Sécurité -----------------------
+\part{Ingénierie et Architecture de Sécurité}
+\input{chapitres/04_ingenierie_architecture}
+
+% ---- Livre V : Réseaux et Communications -------------------------------------
+\part{Réseaux et Communications}
+\input{chapitres/05_reseaux_communications}
+
+% ---- Livre VI : Gestion des Identités et des Accès ---------------------------
+\part{Gestion des Identités et des Accès}
+\input{chapitres/06_gestion_identites_acces}
+
+% ---- Livre VII : Évaluation et Tests de la Sécurité --------------------------
+\part{Évaluation et Tests de la Sécurité}
+\input{chapitres/07_evaluation_tests}
+
+% ---- Livre VIII : Opérations de Sécurité -------------------------------------
+\part{Opérations de Sécurité}
+\input{chapitres/08_operations_securite}
+
+% ---- Livre IX : Sécurité des Applications ------------------------------------
+\part{Sécurité des Applications}
+\input{chapitres/09_securite_applications}
+
+% ------------------------------------------------------------------------------
+% PAGES FINALES
+% ------------------------------------------------------------------------------
+\backmatter
+\input{chapitres/Apropos_Auteur}
+
+\end{document}
