@@ -1,0 +1,171 @@
+% ==============================================================================
+% Fichier : chapitres/03_securite_actifs.tex
+% Livre III : Sécurité des Actifs
+% ==============================================================================
+
+\chapter{Sécurité des Actifs}
+\label{chap:securite_actifs}
+
+\begin{boxobjectifs}
+\textbf{Objectifs du Livre~III :} Donner les éléments de compréhension liés aux actifs informationnels, leur importance et leur protection. À l'issue, l'étudiant saura classifier les données, appliquer les modèles de contrôle d'accès appropriés, gérer la rémanence et se référer aux standards internationaux de contrôle.
+\end{boxobjectifs}
+
+% ------------------------------------------------------------------------------
+\section{Classification des Données}
+% ------------------------------------------------------------------------------
+
+\subsection{Niveaux de Sensibilité}
+
+La classification des données permet d'appliquer des mesures de protection proportionnées à leur valeur et à leur sensibilité.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{p{3cm}p{5cm}p{4cm}}
+    \toprule
+    \textbf{Niveau} & \textbf{Description} & \textbf{Exemples} \\
+    \midrule
+    \textbf{Public}        & Aucune restriction de diffusion. & Site web institutionnel, communiqués de presse. \\
+    \textbf{Interne}       & Usage réservé aux employés. & Procédures internes, organigrammes. \\
+    \textbf{Confidentiel}  & Accès restreint aux personnes autorisées. & Contrats clients, données RH. \\
+    \textbf{Secret/Très Sensible} & Accès ultra-restreint, impact majeur en cas de divulgation. & Données financières stratégiques, secrets industriels. \\
+    \bottomrule
+\end{tabular}
+\caption{Niveaux de classification des données}
+\end{table}
+
+\subsection{Méthodes de Classification}
+\begin{itemize}
+    \item \textbf{Classification manuelle :} Un responsable désigne le niveau lors de la création.
+    \item \textbf{Classification automatique :} Outils DLP (Data Loss Prevention) analysant le contenu et attribuant automatiquement un niveau.
+    \item \textbf{Classification basée sur les rôles :} Le niveau dépend du rôle de l'utilisateur créateur.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Protection des Données}
+% ------------------------------------------------------------------------------
+
+\subsection{Modèles de Contrôles d'Accès}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{2.5cm}p{4.5cm}p{4.5cm}}
+    \toprule
+    \textbf{Modèle} & \textbf{Principe} & \textbf{Usage typique} \\
+    \midrule
+    \textbf{MAC} (Mandatory) & Niveau de sécurité attribué aux sujets et objets par l'administrateur système. L'accès dépend de la comparaison des étiquettes. & Systèmes gouvernementaux, militaires. \\
+    \midrule
+    \textbf{DAC} (Discretionary) & Le propriétaire de la ressource définit qui peut y accéder. & Systèmes de fichiers courants (Windows NTFS, Linux). \\
+    \midrule
+    \textbf{RBAC} (Role-Based) & Les droits sont attribués à des rôles ; les utilisateurs héritent des droits de leur rôle. & Applications d'entreprise (ERP, CRM). \\
+    \midrule
+    \textbf{ABAC} (Attribute-Based) & Accès basé sur les attributs du sujet, de l'objet et de l'environnement. & Cloud, IoT, systèmes distribués complexes. \\
+    \bottomrule
+\end{tabular}
+\caption{Modèles de contrôle d'accès}
+\end{table}
+
+\subsection{Mesures Technico-logiques}
+\begin{itemize}
+    \item \textbf{Pare-feux :} Filtrage du trafic réseau.
+    \item \textbf{Antivirus / EDR :} Détection et neutralisation des malwares.
+    \item \textbf{Chiffrement :} Protection des données en transit (TLS) et au repos (AES).
+    \item \textbf{DLP (Data Loss Prevention) :} Surveillance et blocage des fuites de données.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Appartenance des Données (Data Ownership)}
+% ------------------------------------------------------------------------------
+
+\subsection{Définition et Importance}
+L'appartenance des données désigne la propriété et la responsabilité de celles-ci au sein d'une organisation. Identifier clairement le propriétaire d'une donnée permet de :
+\begin{itemize}
+    \item Définir les rôles et responsabilités en matière de gestion.
+    \item Établir des droits d'accès appropriés.
+    \item Faciliter la traçabilité.
+    \item Assurer la conformité réglementaire.
+\end{itemize}
+
+\subsection{Méthodes pour Déterminer l'Appartenance}
+\begin{itemize}
+    \item Identification du propriétaire (créateur ou responsable métier de la donnée).
+    \item Analyse des flux de données au sein de l'organisation.
+    \item Exploitation des métadonnées (auteur, date, département).
+\end{itemize}
+
+\subsection{Bonnes Pratiques}
+\begin{itemize}
+    \item Sensibiliser les employés à leurs responsabilités.
+    \item Définir des politiques de classification et de gestion des accès claires.
+    \item Réaliser des audits réguliers de la gestion des accès.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Mémoire, Rémanence et Destruction}
+% ------------------------------------------------------------------------------
+
+\begin{boxdef}
+\textbf{Rémanence des données :} Persistance de données dans un support de stockage, même après leur suppression apparente. Ce phénomène peut conduire à des fuites d'informations sensibles si les supports ne sont pas correctement effacés avant réaffectation ou destruction.
+\end{boxdef}
+
+\subsection{Risques associés à la Rémanence}
+\begin{itemize}
+    \item Vol de données lors de la revente ou du recyclage de matériel.
+    \item Réutilisation inappropriée de supports sans effacement sécurisé.
+    \item Non-conformité réglementaire (conservation de données au-delà de la durée légale).
+\end{itemize}
+
+\subsection{Méthodes d'Effacement Sécurisé}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{p{3cm}p{9cm}}
+    \toprule
+    \textbf{Méthode} & \textbf{Description} \\
+    \midrule
+    \textbf{Écrasement}   & Réécriture multiple sur les secteurs (normes DoD~5220.22-M : 3 passes minimum). \\
+    \textbf{Dégaussement} & Exposition à un champ magnétique puissant détruisant les données magnétiques. \\
+    \textbf{Destruction physique} & Déchiquetage, broyage ou incinération du support. Méthode la plus sûre. \\
+    \textbf{Chiffrement + effacement} & Chiffrement préalable des données puis suppression de la clé. \\
+    \bottomrule
+\end{tabular}
+\caption{Méthodes d'effacement sécurisé des données}
+\end{table}
+
+% ------------------------------------------------------------------------------
+\section{Standards et Référentiels de Contrôle}
+% ------------------------------------------------------------------------------
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{3.5cm}p{8.5cm}}
+    \toprule
+    \textbf{Standard} & \textbf{Description} \\
+    \midrule
+    \textbf{ISO/IEC~27001} & Système de Management de la Sécurité de l'Information (SMSI). Certification internationale de référence. \\
+    \textbf{NIST SP~800-53} & Contrôles de sécurité pour les systèmes d'information fédéraux américains (18 familles de contrôles). \\
+    \textbf{COBIT~2019}     & Cadre de gouvernance et de gestion des TI développé par l'ISACA (5 domaines). \\
+    \textbf{CIS Controls}   & 18 contrôles de sécurité essentiels prioritaires, du Center for Internet Security. \\
+    \textbf{PCI~DSS}        & Norme de sécurité des données pour l'industrie des cartes de paiement (12 exigences). \\
+    \bottomrule
+\end{tabular}
+\caption{Principaux standards et référentiels de contrôle}
+\end{table}
+
+% ------------------------------------------------------------------------------
+\section{Évaluation des Acquis --- Livre~III}
+% ------------------------------------------------------------------------------
+
+\begin{boxexo}
+\textbf{QCM :}
+\begin{enumerate}
+    \item Quel modèle de contrôle d'accès est le plus adapté à un système militaire ? \textbf{(a) DAC \quad (b) RBAC \quad (c) MAC \quad (d) ABAC}
+    \item La rémanence des données désigne : \textbf{(a) La durée de vie d'un disque dur \quad (b) La persistance de données après leur suppression apparente \quad (c) La sauvegarde automatique des données \quad (d) La compression des données}
+    \item ISO/IEC 27001 porte sur : \textbf{(a) Les contrôles financiers \quad (b) Le système de management de la sécurité de l'information \quad (c) La gestion de projet \quad (d) La virtualisation}
+    \item Quelle méthode d'effacement est la plus sûre pour un disque dur contenant des données classifiées Secret ? \textbf{(a) Formatage simple \quad (b) Suppression des fichiers \quad (c) Destruction physique \quad (d) Chiffrement ultérieur}
+\end{enumerate}
+
+\textbf{Travail Pratique :}\\
+Proposer une politique de classification des données pour une université, en identifiant au moins cinq types de données traitées, leurs niveaux de sensibilité et les mesures de protection à appliquer.
+\end{boxexo}

@@ -1,0 +1,248 @@
+% ==============================================================================
+% Fichier : chapitres/04_ingenierie_architecture.tex
+% Livre IV : Ingénierie et Architecture de Sécurité
+% ==============================================================================
+
+\chapter{Ingénierie et Architecture de Sécurité}
+\label{chap:ingenierie_archi}
+
+\begin{boxobjectifs}
+\textbf{Objectifs du Livre~IV :} Donner les éléments liés aux modèles de sécurité, aux fondements de la cryptographie (symétrique, asymétrique, hachage), à la sécurité physique et à la virtualisation. À l'issue, l'étudiant sera capable d'implémenter les chiffrements classiques et de concevoir une architecture de sécurité défense en profondeur.
+\end{boxobjectifs}
+
+% ------------------------------------------------------------------------------
+\section{Modèles de Sécurité}
+% ------------------------------------------------------------------------------
+
+\subsection{Modèle de Bell-LaPadula (Confidentialité)}
+
+\begin{boxdef}
+Modèle orienté \textbf{confidentialité}, utilisé dans les systèmes militaires. Repose sur deux règles :
+\begin{itemize}
+    \item \textbf{No Read Up (NRU) :} Un sujet ne peut pas lire une ressource de niveau de classification supérieur au sien.
+    \item \textbf{No Write Down (NWD) :} Un sujet ne peut pas écrire dans une ressource de niveau inférieur au sien (pour éviter la fuite d'informations classifiées).
+\end{itemize}
+\end{boxdef}
+
+\subsection{Modèle de Biba (Intégrité)}
+\begin{boxdef}
+Modèle orienté \textbf{intégrité}, inverse de Bell-LaPadula :
+\begin{itemize}
+    \item \textbf{No Write Up :} Un sujet ne peut pas écrire dans une ressource de niveau d'intégrité supérieur.
+    \item \textbf{No Read Down :} Un sujet ne peut pas lire une ressource de niveau d'intégrité inférieur.
+\end{itemize}
+\end{boxdef}
+
+\subsection{Chinese Wall (Brewer-Nash)}
+Modèle dynamique évitant les \textbf{conflits d'intérêts}. Un consultant ayant accédé aux données d'une entreprise A ne peut plus accéder aux données d'une entreprise concurrente B.
+
+% ------------------------------------------------------------------------------
+\section{Fondamentaux de la Conception d'Architecture de Sécurité}
+% ------------------------------------------------------------------------------
+
+\subsection{Principes de Base}
+
+\begin{itemize}
+    \item \textbf{Défense en profondeur :} Multiplier les couches de sécurité indépendantes. Si une couche est compromise, les suivantes assurent la protection.
+    \item \textbf{Moindre privilège :} N'accorder que les droits strictement nécessaires à l'accomplissement d'une tâche.
+    \item \textbf{Séparation des fonctions :} Aucun individu ne doit avoir le contrôle complet sur un processus critique (principe des «~quatre yeux~»).
+    \item \textbf{Sécurité par défaut :} Les systèmes doivent être sécurisés dans leur configuration initiale.
+    \item \textbf{Fail Secure :} En cas de panne, le système doit basculer dans un état sécurisé (accès refusé plutôt qu'accordé).
+\end{itemize}
+
+\subsection{Segmentation Réseau et Défense en Profondeur}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.85]
+  \draw[thick, CouleurPrimaire, fill=CouleurPrimaire!5, rounded corners] (-5,-3) rectangle (5,3);
+  \node[CouleurPrimaire, font=\small\bfseries] at (0,2.7) {Zone Externe (Internet)};
+
+  \draw[thick, CouleurAccent, fill=CouleurAccent!5, rounded corners] (-3.5,-2) rectangle (3.5,2);
+  \node[CouleurAccent, font=\small\bfseries] at (0,1.7) {DMZ (Serveurs Web, Mail)};
+
+  \draw[thick, NavyBlue, fill=NavyBlue!5, rounded corners] (-2,-1) rectangle (2,1);
+  \node[NavyBlue, font=\small\bfseries] at (0,0.7) {LAN Interne};
+  \node[font=\tiny] at (0,0.1) {Serveurs applicatifs, BDD};
+  \node[font=\tiny] at (0,-0.3) {Postes de travail};
+
+  % Pares-feux
+  \node[font=\tiny\bfseries, CouleurPrimaire] at (4,-2.5) {Pare-feu 1};
+  \node[font=\tiny\bfseries, CouleurAccent]  at (3,-1.5) {Pare-feu 2};
+\end{tikzpicture}
+\captionof{figure}{Architecture Défense en Profondeur avec DMZ}
+\end{center}
+
+% ------------------------------------------------------------------------------
+\section{Architecture Matérielle Sécurisée}
+% ------------------------------------------------------------------------------
+
+\subsection{Vulnérabilités et Menaces Matérielles}
+\begin{itemize}
+    \item Défauts de conception ou de fabrication (ex. : Spectre, Meltdown).
+    \item Configurations incorrectes (BIOS/UEFI non protégés, ports USB ouverts).
+    \item Menaces physiques : vol, sabotage, espionnage industriel.
+\end{itemize}
+
+\subsection{Mesures de Protection Matérielle}
+\begin{itemize}
+    \item \textbf{TPM (Trusted Platform Module) :} Puce sécurisée pour le stockage de clés de chiffrement et la vérification de l'intégrité du démarrage.
+    \item \textbf{Contrôle d'accès physique :} Salles serveurs verrouillées, racks sécurisés.
+    \item \textbf{Surveillance de l'intégrité :} Journaux événements, IDS matériels.
+    \item \textbf{Mises à jour de micrologiciel :} Application régulière des patchs BIOS/UEFI.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Systèmes d'Exploitation et Architecture Logicielle}
+% ------------------------------------------------------------------------------
+
+\subsection{Vulnérabilités des Systèmes d'Exploitation}
+\begin{itemize}
+    \item Erreurs de programmation (buffer overflow, use-after-free).
+    \item Droits d'accès inappropriés (comptes sur-privilégiés).
+    \item Services non utilisés exposant des surfaces d'attaque inutiles.
+    \item Mises à jour non appliquées (exploitation des CVE connus).
+\end{itemize}
+
+\subsection{Principes d'Architecture Logicielle Sécurisée}
+\begin{itemize}
+    \item \textbf{Modularité :} Composants indépendants et substituables.
+    \item \textbf{Séparation des préoccupations :} Fonctions de sécurité isolées du code métier.
+    \item \textbf{Abstraction :} Masquage des détails d'implémentation.
+    \item \textbf{Évolutivité :} Capacité à gérer une charge croissante sans dégrader la sécurité.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Virtualisation}
+% ------------------------------------------------------------------------------
+
+La virtualisation utilise un \termecle{hyperviseur} pour créer et gérer des machines virtuelles (VM). Elle introduit de nouvelles vulnérabilités :
+\begin{itemize}
+    \item \textbf{Attaques contre l'hyperviseur (VM Escape) :} Compromission de toutes les VM hébergées.
+    \item \textbf{Attaques inter-VM (VM Hopping) :} Une VM compromise attaque les voisines.
+    \item \textbf{Fuites de données mémoire} entre VM partageant le même hôte physique.
+\end{itemize}
+
+\textbf{Contre-mesures :} Sécurisation de l'hyperviseur, isolation des réseaux virtuels (VLAN), application stricte des politiques de groupes de sécurité.
+
+% ------------------------------------------------------------------------------
+\section{Introduction à la Cryptographie}
+% ------------------------------------------------------------------------------
+
+\subsection{Algorithmes Symétriques}
+
+La même clé est utilisée pour chiffrer et déchiffrer. Alice et Bob doivent partager la clé secrète à l'avance.
+
+\subsubsection{Chiffrement de César}
+Substitution mono-alphabétique par décalage d'un entier $k$ ($0 \leq k \leq 25$) dans l'alphabet.
+
+\[
+C_i = (P_i + k) \mod 26 \qquad \text{(Chiffrement)}
+\]
+\[
+P_i = (C_i - k) \mod 26 \qquad \text{(Déchiffrement)}
+\]
+
+\begin{boxlizbiz}
+\textbf{Exemple :} $k=3$, message \texttt{BONJOUR} $\rightarrow$ \texttt{ERQMRXU}\\
+\textit{Faiblesse :} 25 clés seulement, cassé par analyse de fréquence.
+\end{boxlizbiz}
+
+\subsubsection{Chiffrement de Vigenère}
+Substitution poly-alphabétique utilisant une clé de longueur $n$. La lettre en position $i$ est décalée de la valeur numérique de la lettre de clé correspondante.
+
+\[
+C_i = (P_i + K_{i \mod n}) \mod 26
+\]
+
+\begin{boxlizbiz}
+\textbf{Exemple :} Message \texttt{BONJOUR}, Clé \texttt{CLE} :
+\begin{verbatim}
+B O N J O U R
+C L E C L E C
+D Z R L Z Y T
+\end{verbatim}
+\textit{Faiblesse :} Cassé par le test de Kasiski si la clé est courte et répétée.
+\end{boxlizbiz}
+
+\subsubsection{Chiffrement de Hill}
+Chiffrement par blocs utilisant l'algèbre matricielle sur $\mathbb{Z}_{26}$ :
+\[
+\mathbf{C} = \mathbf{K} \cdot \mathbf{P} \mod 26
+\]
+où $\mathbf{K}$ est la matrice-clé (inversible sur $\mathbb{Z}_{26}$) et $\mathbf{P}$ le vecteur plaintext.
+
+\subsubsection{Algorithmes Modernes Symétriques}
+\begin{itemize}
+    \item \textbf{DES} (Data Encryption Standard, 1977) : 56 bits, obsolète.
+    \item \textbf{3DES} : Triple DES, plus sûr mais lent.
+    \item \textbf{AES} (Advanced Encryption Standard, 2001) : Standard actuel — 128, 192 ou 256 bits.
+\end{itemize}
+
+\subsection{Algorithmes Asymétriques}
+Deux clés différentes : clé publique (chiffrement, vérification de signature) et clé privée (déchiffrement, signature). La clé publique peut être librement partagée.
+
+\begin{itemize}
+    \item \textbf{RSA :} Basé sur la difficulté de factorisation de grands entiers. Clés de 2048 ou 4096 bits.
+    \item \textbf{ECDSA :} Basé sur les courbes elliptiques. Efficace pour les signatures.
+    \item \textbf{Diffie-Hellman :} Protocole d'échange de clés sur un canal non sécurisé.
+\end{itemize}
+
+\begin{boxinfo}
+\textbf{Utilisation hybride :} En pratique, on utilise la cryptographie asymétrique pour échanger une clé symétrique de session, puis AES pour chiffrer les données (TLS/SSL).
+\end{boxinfo}
+
+\subsection{Fonctions de Hachage}
+Transforme des données de taille quelconque en empreinte de taille fixe. Propriétés : déterminisme, résistance aux préimages, résistance aux collisions, effet avalanche.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{llll}
+    \toprule
+    \textbf{Algorithme} & \textbf{Taille du hash} & \textbf{Statut} \\
+    \midrule
+    MD5    & 128 bits & Obsolète (collisions connues) \\
+    SHA-1  & 160 bits & Déprécié \\
+    SHA-256 & 256 bits & Recommandé \\
+    SHA-3  & 256/512 bits & Standard actuel \\
+    \bottomrule
+\end{tabular}
+\caption{Fonctions de hachage courantes}
+\end{table}
+
+\subsection{Cryptanalyse}
+Science visant à analyser et casser les systèmes cryptographiques. Principales attaques :
+\begin{itemize}
+    \item \textbf{Force brute :} Essai exhaustif de toutes les clés possibles.
+    \item \textbf{Analyse de fréquence :} Exploitation des redondances statistiques de la langue.
+    \item \textbf{Attaque à texte clair connu :} Exploitation de paires (texte clair, texte chiffré) connues.
+    \item \textbf{Attaque par collision :} Recherche de deux entrées distinctes produisant le même hash.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Sécurité Physique}
+% ------------------------------------------------------------------------------
+\begin{itemize}
+    \item Contrôle d'accès aux salles serveurs (badge, biométrie, sas).
+    \item Surveillance vidéo et enregistrement des entrées.
+    \item Protection contre les incendies (détection, suppression gaz FM200).
+    \item Alimentation sans coupure (UPS) et générateurs.
+    \item Protection contre les inondations, la chaleur et les interférences électromagnétiques.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Évaluation des Acquis --- Livre~IV}
+% ------------------------------------------------------------------------------
+
+\begin{boxexo}
+\textbf{Exercices :}
+\begin{enumerate}
+    \item Chiffrez le message \texttt{ENSPY} avec le chiffrement de César, $k=5$.
+    \item Avec la clé \texttt{SEC}, chiffrez \texttt{AUDIT} avec Vigenère.
+    \item Quelle est la différence fondamentale entre un algorithme symétrique et un algorithme asymétrique ?
+    \item Expliquez le principe de défense en profondeur avec un schéma réseau commenté.
+    \item Calculez le hash SHA-256 de la chaîne \texttt{Securite2024} (à faire en TP avec Python : \texttt{hashlib.sha256}).
+\end{enumerate}
+
+\textbf{Travail Pratique :}\\
+Concevoir et développer un site web sécurisé implémentant le modèle Chinese Wall pour une entreprise de traitement de données. Le site doit : (1) authentifier les utilisateurs avec un hash sécurisé (bcrypt), (2) vérifier l'intégrité des données (SHA-256), (3) appliquer les restrictions Chinese Wall selon les projets affectés.
+\end{boxexo}

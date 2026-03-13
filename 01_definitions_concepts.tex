@@ -1,0 +1,163 @@
+% ==============================================================================
+% Fichier : chapitres/01_definitions_concepts.tex
+% Livre I : Définitions, Concepts et Bases pour le Cours
+% ==============================================================================
+
+\chapter{Définitions, Concepts et Bases pour le Cours}
+\label{chap:definitions}
+
+\begin{boxobjectifs}
+\textbf{Objectifs du Livre~I :} Fournir les éléments de compréhension et les notions fondamentales manipulées tout au long du cours. À l'issue de ce livre, l'étudiant maîtrisera le vocabulaire essentiel de la sécurité informatique, de la cybersécurité, de la gestion des risques, des actifs, des réseaux et de l'identité.
+\end{boxobjectifs}
+
+% ------------------------------------------------------------------------------
+\section{Bases de la Sécurité Informatique}
+% ------------------------------------------------------------------------------
+
+\subsection{Confidentialité}
+La confidentialité, dans le domaine de la sécurité informatique, se réfère à la protection des informations contre tout accès non autorisé. C'est un principe fondamental qui garantit que seules les personnes ou entités autorisées peuvent accéder à des données sensibles (personnelles, financières, commerciales ou gouvernementales).
+
+\subsection{Disponibilité}
+La disponibilité vise à garantir que les services et les systèmes informatiques restent accessibles et fonctionnels à tout moment, selon des critères définis. Le niveau visé varie selon le secteur : dans la santé, une disponibilité de $99{,}999\,\%$ peut être impérative ; dans la finance, des temps d'arrêt planifiés en heures creuses peuvent être tolérés.
+
+\subsection{Intégrité}
+L'intégrité des données garantit que celles-ci sont conservées et transmises sans altération non autorisée. Les données doivent rester exactes, cohérentes et fiables tout au long de leur cycle de vie, qu'il s'agisse de stockage ou de transmission.
+
+\subsection{Non-répudiation}
+La non-répudiation garantit qu'une fois une action ou une transaction effectuée, les parties impliquées ne peuvent pas la nier a posteriori. L'expéditeur ne peut pas nier avoir envoyé un message, et le destinataire ne peut pas nier l'avoir reçu.
+
+\subsection{Cryptographie}
+La cryptographie représente un pilier fondamental de la sécurité informatique. Elle consiste en l'application de techniques mathématiques et algorithmiques pour sécuriser les communications et les informations en les rendant illisibles à toute personne n'ayant pas la clé de déchiffrement.
+
+\subsection{Hachage}
+Une fonction de hachage est un algorithme qui prend en entrée des données de n'importe quelle taille et génère une sortie de taille fixe, unique pour chaque entrée (\og{}empreinte\fg{} ou \og{}hash\fg{}). En sécurité, toute modification même minime d'une donnée entraîne un changement complet du hash, permettant de détecter toute altération.
+
+\subsection{Attaques Informatiques}
+Une attaque informatique est un événement intentionnel ou non qui vise à compromettre la confidentialité, la disponibilité ou l'intégrité des données et des systèmes. Elle peut prendre la forme d'accès non autorisés, de perturbations de services, de modifications de données ou d'exécutions de code malveillant.
+
+% ------------------------------------------------------------------------------
+\section{Bases de la Cybersécurité}
+% ------------------------------------------------------------------------------
+
+\subsection{Malware}
+Le terme \termecle{malware} désigne un logiciel malveillant conçu pour exécuter des actions nuisibles (copie, suppression ou modification de données, perturbation du système, vol d'informations confidentielles, ouverture de portes dérobées).
+
+\subsection{Vers (Worms)}
+Le ver est une forme de malware qui se caractérise par sa capacité à se propager rapidement à travers les réseaux informatiques en se copiant automatiquement dès la détection d'une connexion externe.
+
+\subsection{Ransomware}
+Un \termecle{ransomware} chiffre ou verrouille les fichiers ou sous-systèmes de la victime, puis exige le paiement d'une rançon (souvent en cryptomonnaie) pour en restituer l'accès.
+
+\subsection{Ingénierie Sociale}
+L'ingénierie sociale exploite les vulnérabilités humaines (peur, cupidité, confiance, soumission à l'autorité) pour tromper les individus et leur faire divulguer des informations confidentielles. Le \termecle{phishing} en est l'exemple le plus répandu.
+
+\subsection{DoS et DDoS}
+\begin{itemize}
+    \item \textbf{DoS (Denial of Service) :} Attaque visant à rendre un service indisponible en le saturant de requêtes depuis une seule source.
+    \item \textbf{DDoS (Distributed DoS) :} Même principe mais depuis des milliers de machines (botnet) simultanément, amplifiant l'impact.
+\end{itemize}
+
+\subsection{Botnet}
+Un \termecle{botnet} est un réseau de machines infectées (bots) contrôlées à distance par un cybercriminel pour mener des attaques coordonnées (spam, DDoS, minage de cryptomonnaie).
+
+% ------------------------------------------------------------------------------
+\section{Bases de la Gestion des Risques}
+% ------------------------------------------------------------------------------
+
+\begin{boxdef}
+\textbf{Menace :} Tout événement potentiel susceptible de causer un préjudice à un actif.\\[0.3em]
+\textbf{Vulnérabilité :} Faiblesse d'un actif ou d'un contrôle pouvant être exploitée par une menace.\\[0.3em]
+\textbf{Impact :} Conséquence de la matérialisation d'une menace sur un actif.\\[0.3em]
+\textbf{Probabilité :} Vraisemblance qu'une menace se concrétise.\\[0.3em]
+\textbf{Risque Informatique :} Combinaison de la probabilité d'occurrence d'une menace et de son impact potentiel sur l'organisation.
+\end{boxdef}
+
+La formule de base du risque est :
+\[
+\text{Risque} = \text{Probabilité} \times \text{Impact}
+\]
+
+% ------------------------------------------------------------------------------
+\section{Bases de la Gestion des Actifs}
+% ------------------------------------------------------------------------------
+
+\begin{boxdef}
+\textbf{Actif :} Tout élément ayant de la valeur pour l'organisation et nécessitant une protection.\\[0.3em]
+\textbf{Actif Primaire :} Information ou processus métier essentiel (ex. : données clients, processus de paie).\\[0.3em]
+\textbf{Actif Secondaire :} Support nécessaire au traitement ou à la protection des actifs primaires (ex. : serveurs, logiciels, personnes).
+\end{boxdef}
+
+% ------------------------------------------------------------------------------
+\section{Bases en Architecture et Ingénierie de Sécurité}
+% ------------------------------------------------------------------------------
+
+\begin{itemize}
+    \item \textbf{Architecture de sécurité :} Ensemble cohérent de principes, méthodes et modèles qui guident la conception et le déploiement des mesures de protection d'un SI.
+    \item \textbf{Contremesures :} Actions, dispositifs, procédures ou techniques qui réduisent la probabilité ou l'impact d'une menace.
+    \item \textbf{Cryptanalyse :} Science visant à analyser et casser les algorithmes de chiffrement, par opposition à la cryptographie.
+    \item \textbf{Virtualisation :} Technique consistant à créer des versions virtuelles de ressources matérielles (serveurs, réseaux, stockage) pour optimiser leur utilisation.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Bases des Réseaux et Communications}
+% ------------------------------------------------------------------------------
+
+\begin{itemize}
+    \item \textbf{Réseaux informatiques :} Ensemble d'équipements interconnectés permettant l'échange de données.
+    \item \textbf{Topologie :} Organisation physique ou logique des nœuds d'un réseau (étoile, bus, anneau, maillage).
+    \item \textbf{Protocole :} Ensemble de règles définissant le format et l'ordre des messages échangés entre entités réseau.
+    \item \textbf{Sécurité réseau :} Ensemble des politiques et mécanismes visant à protéger les données en transit et les équipements réseau.
+    \item \textbf{Pare-feu :} Dispositif filtrant le trafic réseau selon des règles définies pour bloquer les accès non autorisés.
+    \item \textbf{IDS/IPS :} Systèmes de détection (IDS) et de prévention (IPS) d'intrusion, surveillant le trafic en temps réel.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Bases de la Gestion des Accès et des Identités}
+% ------------------------------------------------------------------------------
+
+\begin{itemize}
+    \item \textbf{Authentification :} Processus de vérification de l'identité d'un utilisateur ou d'un système.
+    \item \textbf{Autorisation :} Processus de détermination des droits et privilèges accordés à une identité authentifiée.
+    \item \textbf{Journalisation :} Enregistrement horodaté des événements et actions survenant dans un SI.
+    \item \textbf{Contrôle d'accès :} Mécanisme régissant l'accès aux ressources selon le principe du moindre privilège.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Bases de la Sécurité des Opérations}
+% ------------------------------------------------------------------------------
+
+\begin{itemize}
+    \item \textbf{Incident :} Événement qui compromet ou menace la sécurité d'un SI.
+    \item \textbf{Activité :} Tâche ou processus métier réalisé par des personnes ou des systèmes.
+    \item \textbf{Opération :} Ensemble d'activités coordonnées pour atteindre un objectif défini.
+    \item \textbf{Contrôle :} Mesure technique, organisationnelle ou physique visant à réduire un risque.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Bases du Développement Sécurisé d'Applications}
+% ------------------------------------------------------------------------------
+
+\begin{itemize}
+    \item \textbf{Besoins fonctionnels :} Fonctions que le logiciel doit remplir (ce qu'il fait).
+    \item \textbf{Besoins non fonctionnels :} Contraintes de qualité, de performance, de sécurité et de maintenabilité (comment il le fait).
+    \item \textbf{Logiciel :} Programme informatique répondant à un ensemble de besoins définis.
+    \item \textbf{Cycle de vie logiciel :} Ensemble des phases de la vie d'un logiciel, de sa conception à son retrait (SDLC).
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Évaluation des Acquis --- Livre~I}
+% ------------------------------------------------------------------------------
+
+\begin{boxexo}
+\textbf{Questions de révision :}
+\begin{enumerate}
+    \item Quels sont les trois piliers fondamentaux (trilogie CIA) de la sécurité informatique ?
+    \item Quelle est la différence entre un virus, un ver et un ransomware ?
+    \item Formulez la relation mathématique entre risque, probabilité et impact.
+    \item Distinguez actif primaire et actif secondaire en donnant deux exemples de chacun.
+    \item Quelle est la différence entre authentification et autorisation ?
+    \item En quoi la cryptanalyse est-elle l'inverse de la cryptographie ?
+    \item Un employé reçoit un email lui demandant de cliquer sur un lien pour mettre à jour ses identifiants bancaires. De quel type d'attaque s'agit-il ? Justifiez.
+    \item Un système informatique connaît une panne pendant 5 minutes par an. Calculez son taux de disponibilité en pourcentage.
+\end{enumerate}
+\end{boxexo}

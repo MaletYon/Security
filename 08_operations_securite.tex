@@ -1,0 +1,236 @@
+% ==============================================================================
+% Fichier : chapitres/08_operations_securite.tex
+% Livre VIII : Opérations de Sécurité
+% ==============================================================================
+
+\chapter{Opérations de Sécurité}
+\label{chap:operations}
+
+\begin{boxobjectifs}
+\textbf{Objectifs du Livre~VIII :} Présenter les opérations quotidiennes de sécurité informatique : gouvernance administrative, investigation numérique, gestion des incidents, contrôles opérationnels, tolérance aux pannes et plans de continuité/reprise d'activité.
+\end{boxobjectifs}
+
+% ------------------------------------------------------------------------------
+\section{Sécurité Administrative}
+% ------------------------------------------------------------------------------
+
+\subsection{Gouvernance de la Sécurité}
+La gouvernance de la sécurité est le processus de gestion et de supervision de la sécurité informatique d'une entreprise. Elle définit les objectifs, les rôles, les responsabilités et les processus de décision en matière de sécurité, en les alignant sur la stratégie générale de l'organisation.
+
+\subsection{Politiques de Sécurité}
+Les politiques de sécurité décrivent les règles et procédures à respecter. Elles doivent être :
+\begin{itemize}
+    \item Validées par les autorités dirigeantes.
+    \item Claires, concises et accessibles à tous les employés.
+    \item Régulièrement mises à jour face à l'évolution des menaces.
+\end{itemize}
+
+\subsection{Sensibilisation à la Sécurité Informatique}
+La composante humaine est le maillon le plus faible de la sécurité. La sensibilisation peut prendre la forme de :
+\begin{itemize}
+    \item Formations périodiques (e-learning, ateliers).
+    \item Campagnes de phishing simulé pour tester la vigilance.
+    \item Newsletters et affiches de rappel des bonnes pratiques.
+\end{itemize}
+
+\subsection{Conformité Réglementaire}
+L'organisation doit se conformer aux lois et réglementations applicables (RGPD, loi camerounaise sur la cybersécurité, PCI~DSS, ISO~27001) sous peine de sanctions administratives et pénales.
+
+\subsection{Audits de Sécurité}
+Les audits internes et externes évaluent l'efficacité des contrôles en place et leur conformité aux politiques. Ils peuvent être : audits de vulnérabilité, de conformité, de configuration, de code ou tests d'intrusion.
+
+% ------------------------------------------------------------------------------
+\section{Investigation Numérique (Digital Forensics)}
+% ------------------------------------------------------------------------------
+
+\begin{boxdef}
+\textbf{Investigation numérique :} Discipline consistant à collecter, préserver, analyser et présenter des preuves numériques de manière légalement admissible, dans le but d'établir les faits liés à un incident de sécurité ou à une infraction.
+\end{boxdef}
+
+\subsection{Chaîne de Garde (Chain of Custody)}
+La chaîne de garde assure la traçabilité et l'intégrité des preuves numériques depuis leur collecte jusqu'à leur présentation devant un tribunal. Elle implique :
+\begin{itemize}
+    \item Enregistrement de toutes les actions effectuées sur les preuves (qui, quoi, quand, pourquoi).
+    \item Scellage et stockage sécurisé des originaux.
+    \item Travail exclusivement sur des copies forensiques.
+\end{itemize}
+
+\subsection{Collecte des Preuves}
+\begin{itemize}
+    \item \textbf{Ne jamais travailler sur l'original} : créer une copie bit-à-bit (\textit{forensic image}).
+    \item \textbf{Données volatiles en priorité} : RAM, processus actifs, connexions réseau ouvertes (disparaissent à l'extinction).
+    \item \textbf{Outils spécialisés :} FTK~Imager, EnCase, dd (Linux), Volatility (mémoire vive).
+\end{itemize}
+
+\begin{lstlisting}[language=bash, caption=Création d'une image forensique avec dd]
+# Créer une copie bit-à-bit d'un disque
+dd if=/dev/sdb of=/mnt/evidence/image.dd bs=4096 conv=noerror,sync
+# Calculer et vérifier le hash MD5 pour l'intégrité
+md5sum /dev/sdb > hash_original.md5
+md5sum /mnt/evidence/image.dd > hash_copie.md5
+diff hash_original.md5 hash_copie.md5   # Doit être identique
+\end{lstlisting}
+
+\subsection{Analyse des Éléments Collectés}
+L'analyse porte sur :
+\begin{itemize}
+    \item Journaux système (Windows Event Logs, syslog Linux, journaux pare-feu).
+    \item Artefacts navigateur (historique, cache, cookies).
+    \item Fichiers supprimés récupérés depuis l'espace non alloué.
+    \item Trafic réseau capturé (pcap analysé avec Wireshark).
+    \item Artefacts mémoire (processus cachés, connexions actives, mots de passe en mémoire).
+\end{itemize}
+
+\subsection{Rédaction du Rapport d'Investigation}
+Le rapport doit être factuel, précis et compréhensible par des non-techniciens (juges, avocats). Il contient :
+\begin{enumerate}
+    \item Contexte et mandat de la mission.
+    \item Méthodologie et outils utilisés.
+    \item Chronologie des événements reconstitués.
+    \item Preuves collectées et leur signification.
+    \item Conclusions et recommandations.
+\end{enumerate}
+
+% ------------------------------------------------------------------------------
+\section{Gestion des Incidents}
+% ------------------------------------------------------------------------------
+
+\begin{center}
+\begin{tikzpicture}[
+    node distance=1.4cm,
+    box/.style={rectangle, rounded corners=4pt, draw=CouleurPrimaire,
+                fill=CouleurPrimaire!10, text width=3.2cm, align=center,
+                minimum height=1.1cm, font=\small\bfseries}
+]
+    \node[box] (prep)   {1. Préparation};
+    \node[box] (det)    [right=of prep]  {2. Détection \& Analyse};
+    \node[box] (cont)   [right=of det]   {3. Confinement \& Éradication};
+    \node[box] (recov)  [below=of cont]  {4. Recouvrement};
+    \node[box] (post)   [left=of recov]  {5. Activités Post-incident};
+    \node[box] (learn)  [left=of post]   {6. Leçons tirées};
+
+    \draw[->, thick, CouleurPrimaire] (prep) -- (det);
+    \draw[->, thick, CouleurPrimaire] (det) -- (cont);
+    \draw[->, thick, CouleurPrimaire] (cont) -- (recov);
+    \draw[->, thick, CouleurPrimaire] (recov) -- (post);
+    \draw[->, thick, CouleurPrimaire] (post) -- (learn);
+    \draw[->, thick, CouleurPrimaire, dashed] (learn) -- (prep);
+\end{tikzpicture}
+\captionof{figure}{Cycle de gestion des incidents (NIST SP 800-61)}
+\end{center}
+
+\subsection{Préparation}
+Mettre en place les outils, les équipes, les procédures et les communications nécessaires \textit{avant} qu'un incident ne survienne :
+\begin{itemize}
+    \item Constitution d'une équipe CSIRT (Computer Security Incident Response Team).
+    \item Définition des niveaux de gravité et des escalades.
+    \item Déploiement d'un SIEM (Security Information and Event Management).
+\end{itemize}
+
+\subsection{Détection et Analyse}
+Identifier et qualifier l'incident :
+\begin{itemize}
+    \item Sources de détection : alertes IDS/IPS, SIEM, antivirus, signalement utilisateur.
+    \item Triage : est-ce un faux positif ou un incident réel ?
+    \item Qualification de la gravité (P1~Critique à P4~Faible).
+\end{itemize}
+
+\subsection{Confinement, Éradication et Recouvrement}
+\begin{itemize}
+    \item \textbf{Confinement court terme :} Isolation du système compromis du réseau.
+    \item \textbf{Confinement long terme :} Patch, changement de credentials.
+    \item \textbf{Éradication :} Suppression du malware, fermeture des accès non autorisés.
+    \item \textbf{Recouvrement :} Restauration depuis une sauvegarde saine, remise en production surveillée.
+\end{itemize}
+
+\subsection{Activités Post-incident}
+\begin{itemize}
+    \item Rédaction d'un rapport post-mortem.
+    \item Identification des causes racines (Root Cause Analysis).
+    \item Mise à jour des politiques et procédures.
+    \item Communication aux autorités si requis (RGPD : notification sous 72~h).
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Contrôles Opérationnels}
+% ------------------------------------------------------------------------------
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{3cm}p{9cm}}
+    \toprule
+    \textbf{Type} & \textbf{Exemples} \\
+    \midrule
+    \textbf{Contrôles physiques}       & Serrures, cages serveurs, caméras, badges d'accès, agents de sécurité. \\
+    \textbf{Contrôles logiques}        & Pare-feux, IDS/IPS, chiffrement, antivirus, journalisation, MFA. \\
+    \textbf{Contrôles administratifs}  & Politiques, procédures, formations, séparation des fonctions, audits. \\
+    \bottomrule
+\end{tabular}
+\caption{Catégories de contrôles opérationnels}
+\end{table}
+
+% ------------------------------------------------------------------------------
+\section{Tolérance aux Pannes}
+% ------------------------------------------------------------------------------
+
+\subsection{Haute Disponibilité (HA)}
+Conception d'un système pour minimiser les interruptions non planifiées. Techniques :
+\begin{itemize}
+    \item \textbf{Clustering :} Plusieurs serveurs actifs simultanément (actif-actif).
+    \item \textbf{Failover :} Bascule automatique vers un serveur de secours (actif-passif).
+    \item \textbf{Load Balancing :} Répartition de la charge entre plusieurs serveurs.
+\end{itemize}
+
+\subsection{Architectures Redondantes}
+\begin{itemize}
+    \item \textbf{RAID (Redundant Array of Independent Disks) :} Redondance des données sur plusieurs disques.
+    \item \textbf{Double alimentation électrique + UPS :} Protection contre les coupures de courant.
+    \item \textbf{Double connectivité réseau (liaisons redondantes) :} Continuité en cas de panne d'un opérateur.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Plan de Continuité des Activités (PCA) et Plan de Reprise (PRA)}
+% ------------------------------------------------------------------------------
+
+\begin{boxdef}
+\textbf{PCA (Plan de Continuité des Activités) :} Ensemble de mesures permettant de maintenir les fonctions critiques à un niveau acceptable \textit{pendant} un sinistre.
+
+\textbf{PRA (Plan de Reprise après Sinistre) :} Ensemble de mesures permettant de reprendre l'activité normale \textit{après} un sinistre. Il définit les procédures de retour à l'état nominal.
+\end{boxdef}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{3cm}p{8.5cm}}
+    \toprule
+    \textbf{Indicateur} & \textbf{Définition} \\
+    \midrule
+    \textbf{RTO} (Recovery Time Objective)  & Durée maximale acceptable d'interruption. Ex. : 4~heures. \\
+    \textbf{RPO} (Recovery Point Objective) & Perte de données maximale acceptable. Ex. : données des 2 dernières heures. \\
+    \textbf{MTD} (Maximum Tolerable Downtime) & Durée maximale au-delà de laquelle l'organisation ne peut plus fonctionner. \\
+    \bottomrule
+\end{tabular}
+\caption{Indicateurs clés de continuité}
+\end{table}
+
+% ------------------------------------------------------------------------------
+\section{Évaluation des Acquis --- Livre~VIII}
+% ------------------------------------------------------------------------------
+
+\begin{boxexo}
+\textbf{QCM :}
+\begin{enumerate}
+    \item La chaîne de garde (chain of custody) vise principalement à : \textbf{(a) Accélérer l'enquête \quad (b) Assurer la traçabilité et l'intégrité des preuves \quad (c) Supprimer les données compromises \quad (d) Former les enquêteurs}
+    \item Dans le cycle NIST de gestion des incidents, quelle phase suit immédiatement la détection ? \textbf{(a) Préparation \quad (b) Confinement \quad (c) Recouvrement \quad (d) Rédaction du rapport}
+    \item Le RPO (Recovery Point Objective) mesure : \textbf{(a) Le temps de reprise maximal \quad (b) La perte de données maximale acceptable \quad (c) Le coût de la reprise \quad (d) La disponibilité du système}
+    \item Le SIEM est un outil de : \textbf{(a) Chiffrement des données \quad (b) Collecte et corrélation des journaux de sécurité \quad (c) Gestion des identités \quad (d) Sauvegarde automatique}
+\end{enumerate}
+
+\textbf{Travaux Pratiques :}
+\begin{itemize}
+    \item Cloner un disque avec FTK~Imager et vérifier l'intégrité par hash MD5/SHA-256.
+    \item Prendre en main l'outil EnCase pour l'analyse forensique d'une image disque.
+    \item Proposer une campagne de sensibilisation aux cyberattaques pour l'ENSPY (affiche, quiz, simulation de phishing).
+\end{itemize}
+\end{boxexo}

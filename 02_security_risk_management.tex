@@ -1,0 +1,236 @@
+% ==============================================================================
+% Fichier : chapitres/02_security_risk_management.tex
+% Livre II : Security and Risk Management
+% ==============================================================================
+
+\chapter{Security and Risk Management}
+\label{chap:risk_management}
+
+\begin{boxobjectifs}
+\textbf{Objectifs du Livre~II :} Donner les éléments de compréhension liés à la gestion des risques, domaine majeur de la sécurité informatique. À l'issue, l'étudiant saura élaborer une politique de sécurité, mener une analyse des risques, identifier les cadres légaux applicables et distinguer les types d'attaquants.
+\end{boxobjectifs}
+
+% ------------------------------------------------------------------------------
+\section{Gouvernance de la Sécurité de l'Information}
+% ------------------------------------------------------------------------------
+
+\subsection{Élaboration des Politiques de Sécurité}
+
+Une politique de sécurité est un document officiel qui définit les règles et les directives adoptées par une organisation pour gérer et protéger ses actifs informationnels. Elle doit être :
+
+\begin{itemize}
+    \item \textbf{Alignée sur les objectifs stratégiques} de l'organisation.
+    \item \textbf{Approuvée par la direction} pour lui conférer son autorité.
+    \item \textbf{Communiquée} à l'ensemble du personnel.
+    \item \textbf{Régulièrement révisée} pour tenir compte de l'évolution des menaces.
+\end{itemize}
+
+\subsection{Procédures de Sécurité}
+
+Les procédures de sécurité déclinent opérationnellement les politiques en étapes concrètes. Elles doivent :
+\begin{enumerate}
+    \item Être développées en concertation avec les parties prenantes.
+    \item Faire l'objet de tests et de validations.
+    \item Être communiquées et comprises par tout le personnel concerné.
+    \item Être soigneusement documentées et archivées.
+    \item Être évaluées régulièrement pour identifier les lacunes.
+\end{enumerate}
+
+\subsection{Rôles et Responsabilités}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{p{3.5cm}p{9cm}}
+    \toprule
+    \textbf{Acteur} & \textbf{Responsabilités} \\
+    \midrule
+    \textbf{DSI} (Directeur des SI) & Supervision globale du SI, définition de la stratégie sécurité, alignement sur les objectifs métier, allocation des ressources. \\
+    \midrule
+    \textbf{RSSI} (Resp. Sécurité SI) & Élaboration et mise en œuvre des politiques et procédures, évaluation des risques, supervision des incidents, sensibilisation du personnel. \\
+    \midrule
+    \textbf{Responsables métier} & Application des politiques dans leur périmètre, remontée des incidents. \\
+    \midrule
+    \textbf{Auditeurs} & Évaluation indépendante de la conformité et de l'efficacité des contrôles. \\
+    \bottomrule
+\end{tabular}
+\caption{Principaux rôles dans la gouvernance de la sécurité de l'information}
+\end{table}
+
+% ------------------------------------------------------------------------------
+\section{Contrôle d'Accès}
+% ------------------------------------------------------------------------------
+
+Les contrôles d'accès régulent l'accès aux systèmes d'information et se répartissent en deux grandes catégories :
+
+\subsection{Contrôles d'Accès Physique}
+\begin{itemize}
+    \item Barrières physiques (portiques, tourniquets, sas de sécurité).
+    \item Systèmes \og{}\textit{mantrap}\fg{} (accès d'une personne à la fois).
+    \item Badges d'accès (RFID, magnétiques).
+    \item Surveillance vidéo (CCTV).
+    \item Gardiens et rondes de sécurité.
+\end{itemize}
+
+\subsection{Contrôles d'Accès Technico-logiques}
+\begin{itemize}
+    \item Listes de contrôle d'accès (ACL).
+    \item Pares-feux filtrant le trafic réseau.
+    \item Systèmes IDS/IPS surveillant les activités suspectes.
+    \item Authentification multifacteur (MFA).
+    \item Chiffrement des données en transit et au repos.
+\end{itemize}
+
+\begin{boxinfo}
+La combinaison des contrôles physiques et logiques est essentielle pour garantir une sécurité globale. Ils protègent à la fois les infrastructures matérielles et les données numériques.
+\end{boxinfo}
+
+% ------------------------------------------------------------------------------
+\section{Analyse des Risques}
+% ------------------------------------------------------------------------------
+
+\begin{center}
+\begin{tikzpicture}[
+    node distance=1.5cm,
+    box/.style={rectangle, rounded corners, draw=CouleurPrimaire, fill=CouleurPrimaire!10,
+                text width=3cm, align=center, minimum height=1cm, font=\small\bfseries}
+]
+    \node[box] (id)    {Identification\\des risques};
+    \node[box] (eval)  [right=of id]   {Évaluation\\des risques};
+    \node[box] (trait) [right=of eval] {Traitement\\des risques};
+    \node[box] (surv)  [below=of trait] {Surveillance\\et révision};
+    \node[box] (comm)  [left=of surv]  {Communication\\des risques};
+
+    \draw[->, thick, CouleurPrimaire] (id) -- (eval);
+    \draw[->, thick, CouleurPrimaire] (eval) -- (trait);
+    \draw[->, thick, CouleurPrimaire] (trait) -- (surv);
+    \draw[->, thick, CouleurPrimaire] (surv) -- (comm);
+    \draw[->, thick, CouleurPrimaire] (comm) -- (id);
+\end{tikzpicture}
+\captionof{figure}{Cycle de gestion des risques}
+\end{center}
+
+\subsection{Identification des Risques}
+
+Techniques courantes d'identification :
+\begin{itemize}
+    \item \textbf{Analyse documentaire :} Examen des politiques, rapports d'incidents et audits passés.
+    \item \textbf{Entretiens et ateliers :} Recueil des perceptions des parties prenantes.
+    \item \textbf{Analyse de flux :} Cartographie des traitements et des échanges de données.
+    \item \textbf{Scans de vulnérabilités :} Outils automatisés identifiant les failles techniques.
+\end{itemize}
+
+\subsection{Évaluation des Risques}
+
+\[
+\text{Niveau de Risque} = \text{Probabilité d'occurrence} \times \text{Impact potentiel}
+\]
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lccc}
+    \toprule
+    & \textbf{Impact Faible} & \textbf{Impact Moyen} & \textbf{Impact Élevé} \\
+    \midrule
+    \textbf{Probabilité Élevée}  & Moyen  & Élevé    & Critique \\
+    \textbf{Probabilité Moyenne} & Faible & Moyen    & Élevé    \\
+    \textbf{Probabilité Faible}  & Faible & Faible   & Moyen    \\
+    \bottomrule
+\end{tabular}
+\caption{Matrice de criticité des risques}
+\end{table}
+
+\subsection{Traitement du Risque}
+
+\begin{itemize}
+    \item \textbf{Réduction (Mitigation) :} Mise en place de contrôles pour diminuer la probabilité ou l'impact.
+    \item \textbf{Transfert :} Externalisation du risque (assurance, sous-traitance contractuelle).
+    \item \textbf{Acceptation :} Décision consciente d'assumer le risque résiduel.
+    \item \textbf{Évitement :} Suppression de l'activité ou de l'actif générateur de risque.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Lois et Régulations}
+% ------------------------------------------------------------------------------
+
+\subsection{Lois Internationales}
+\begin{itemize}
+    \item \textbf{RGPD} (Règlement Général sur la Protection des Données, UE 2018) : Protection des données personnelles des citoyens européens.
+    \item \textbf{CFAA} (Computer Fraud and Abuse Act, USA) : Cadre pénal américain contre la fraude informatique.
+    \item \textbf{Convention de Budapest} (2001) : Premier traité international sur la cybercriminalité.
+\end{itemize}
+
+\subsection{Lois Nationales (Cameroun)}
+\begin{itemize}
+    \item \textbf{Loi n°~2010/012} relative à la cybersécurité et à la cybercriminalité.
+    \item Rôle de l'\textbf{ANTIC} (Agence Nationale des Technologies de l'Information et de la Communication) dans la régulation et la supervision de la sécurité des SI.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Sécurité de Tierces Parties}
+% ------------------------------------------------------------------------------
+
+\subsection{Responsabilités envers les Tierces Parties}
+L'organisation reste responsable de la sécurité des données, même lorsque leur traitement est confié à un tiers (prestataire, fournisseur Cloud, sous-traitant). La due diligence s'impose.
+
+\subsection{Cadre de Gestion des Risques Tiers}
+\begin{itemize}
+    \item Évaluation de la maturité sécurité du prestataire (questionnaires, audits).
+    \item Clauses contractuelles de sécurité (SLA, confidentialité, notification d'incidents).
+    \item Surveillance continue des accès du prestataire au SI.
+    \item Plan de sortie prévu en cas de défaillance du tiers.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Éthique et Déontologie}
+% ------------------------------------------------------------------------------
+
+\begin{boxalert}
+\textbf{Code d'éthique du professionnel de sécurité (ISACA/ISC²) :}
+\begin{itemize}
+    \item Protéger la société, les infrastructures communes et la cybersphère.
+    \item Agir honorablement, honnêtement, justement, responsablement et légalement.
+    \item Fournir des services diligents et compétents aux clients et aux employeurs.
+    \item Promouvoir et protéger la profession.
+\end{itemize}
+\end{boxalert}
+
+% ------------------------------------------------------------------------------
+\section{Types d'Attaquants}
+% ------------------------------------------------------------------------------
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{3cm}p{4cm}p{5cm}}
+    \toprule
+    \textbf{Type} & \textbf{Profil} & \textbf{Motivation} \\
+    \midrule
+    \textbf{Script Kiddie}    & Néophyte utilisant des outils prêts-à-l'emploi & Notoriété, curiosité \\
+    \textbf{Hacker Black Hat} & Expert malveillant & Gain financier, espionnage \\
+    \textbf{Hacker White Hat} & Expert éthique (pentest autorisé) & Améliorer la sécurité \\
+    \textbf{Hacker Grey Hat}  & Entre les deux & Variable \\
+    \textbf{Insider Threat}   & Employé malveillant ou négligent & Vengeance, gain, erreur humaine \\
+    \textbf{Hacktiviste}      & Groupe idéologique & Protestation politique \\
+    \textbf{État-nation}      & Service de renseignement & Espionnage, sabotage stratégique \\
+    \bottomrule
+\end{tabular}
+\caption{Typologie des attaquants}
+\end{table}
+
+% ------------------------------------------------------------------------------
+\section{Évaluation des Acquis --- Livre~II}
+% ------------------------------------------------------------------------------
+
+\begin{boxexo}
+\textbf{QCM :}
+\begin{enumerate}
+    \item La formule $\text{Risque} = \text{Probabilité} \times \text{Impact}$ est utilisée dans quelle étape de la gestion des risques ? \textbf{(a) Identification \quad (b) Évaluation \quad (c) Traitement \quad (d) Surveillance}
+    \item Quel est le rôle principal du RSSI ? \textbf{(a) Gérer le budget IT \quad (b) Élaborer et mettre en œuvre la politique sécurité \quad (c) Administrer les serveurs \quad (d) Développer les applications}
+    \item Le transfert de risque consiste à : \textbf{(a) Supprimer le risque \quad (b) Le confier à un tiers (assurance) \quad (c) L'ignorer \quad (d) Réduire son impact}
+    \item Un attaquant utilisant des outils trouvés sur Internet sans comprendre leur fonctionnement est appelé : \textbf{(a) Hacker Black Hat \quad (b) Insider Threat \quad (c) Script Kiddie \quad (d) Hacktiviste}
+\end{enumerate}
+
+\textbf{Travail Pratique :}\\
+Réaliser une analyse de risque simplifiée pour un système d'information fictif en utilisant la matrice de criticité. Identifier trois risques, les évaluer et proposer un traitement pour chacun.
+\end{boxexo}

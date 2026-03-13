@@ -1,0 +1,185 @@
+% ==============================================================================
+% Fichier : chapitres/05_reseaux_communications.tex
+% Livre V : Réseaux et Communications
+% ==============================================================================
+
+\chapter{Réseaux et Communications}
+\label{chap:reseaux}
+
+\begin{boxobjectifs}
+\textbf{Objectifs du Livre~V :} Rappeler les fondamentaux des modèles et protocoles réseaux. Présenter les méthodes et mécanismes de sécurisation des réseaux et des communications (VPN, certificats, PKI). Identifier les principales attaques réseau et leurs contre-mesures.
+\end{boxobjectifs}
+
+% ------------------------------------------------------------------------------
+\section{Les Modèles Réseaux}
+% ------------------------------------------------------------------------------
+
+\subsection{Modèle OSI (7 couches)}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{clp{4cm}p{4cm}}
+    \toprule
+    \textbf{N°} & \textbf{Couche} & \textbf{Rôle} & \textbf{Protocoles / Équipements} \\
+    \midrule
+    7 & Application    & Services aux applications & HTTP, FTP, DNS, SMTP, SSH \\
+    6 & Présentation   & Format, chiffrement, compression & SSL/TLS, JPEG, ASCII \\
+    5 & Session        & Établissement, maintien, fin de sessions & NetBIOS, RPC \\
+    4 & Transport      & Fiabilité, contrôle de flux & TCP, UDP \\
+    3 & Réseau         & Adressage logique, routage & IP, ICMP, OSPF \\
+    2 & Liaison        & Adressage physique, détection d'erreurs & Ethernet, Wi-Fi (802.11), ARP \\
+    1 & Physique       & Transmission des bits & Câbles, fibre optique, hubs \\
+    \bottomrule
+\end{tabular}
+\caption{Modèle OSI}
+\end{table}
+
+\subsection{Modèle TCP/IP (4 couches)}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{clp{7cm}}
+    \toprule
+    \textbf{N°} & \textbf{Couche} & \textbf{Équivalence OSI} \\
+    \midrule
+    4 & Application & Couches 5, 6, 7 \\
+    3 & Transport   & Couche 4 \\
+    2 & Internet    & Couche 3 \\
+    1 & Accès réseau & Couches 1 et 2 \\
+    \bottomrule
+\end{tabular}
+\caption{Modèle TCP/IP}
+\end{table}
+
+% ------------------------------------------------------------------------------
+\section{Protocoles des Couches Basses}
+% ------------------------------------------------------------------------------
+
+\begin{itemize}
+    \item \textbf{ARP (Address Resolution Protocol) :} Résolution d'une adresse IP en adresse MAC. Vulnérable à l'ARP Spoofing.
+    \item \textbf{ICMP :} Protocole de diagnostic réseau (\texttt{ping}). Peut être utilisé pour des attaques de reconnaissance.
+    \item \textbf{TCP (Transmission Control Protocol) :} Connexion fiable, orientée flux. Handshake SYN-SYN/ACK-ACK. Vulnérable au SYN Flood.
+    \item \textbf{UDP (User Datagram Protocol) :} Sans connexion, non fiable, rapide. Utilisé pour DNS, streaming, VoIP.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Protocoles Applicatifs Fondamentaux}
+% ------------------------------------------------------------------------------
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{2.5cm}p{1.5cm}p{7cm}}
+    \toprule
+    \textbf{Protocole} & \textbf{Port} & \textbf{Description et risques} \\
+    \midrule
+    HTTP  & 80  & Web non sécurisé. Trafic en clair, vulnérable à l'interception. \\
+    HTTPS & 443 & HTTP sur TLS. Chiffrement du trafic web. Standard actuel. \\
+    FTP   & 21  & Transfert de fichiers en clair. Remplacé par SFTP/FTPS. \\
+    SSH   & 22  & Shell sécurisé chiffré. Remplace Telnet (23, en clair). \\
+    DNS   & 53  & Résolution de noms. Vulnérable au DNS Spoofing et Cache Poisoning. \\
+    SMTP  & 25  & Envoi d'emails. Vecteur de phishing et spam. \\
+    LDAP  & 389 & Annuaire d'authentification. LDAPS (636) pour la version sécurisée. \\
+    \bottomrule
+\end{tabular}
+\caption{Protocoles applicatifs courants et risques associés}
+\end{table}
+
+% ------------------------------------------------------------------------------
+\section{Technologies LAN et WAN}
+% ------------------------------------------------------------------------------
+
+\begin{itemize}
+    \item \textbf{VLAN (Virtual LAN) :} Segmentation logique d'un réseau physique. Permet d'isoler des zones (ex : VLAN Finance séparé du VLAN Invités).
+    \item \textbf{DMZ (Demilitarized Zone) :} Zone tampon entre Internet et le LAN interne, hébergeant les serveurs exposés (web, mail).
+    \item \textbf{WAN / MPLS :} Interconnexion de sites distants de manière privée et sécurisée.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Périphériques Réseau}
+% ------------------------------------------------------------------------------
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{3cm}p{4cm}p{5cm}}
+    \toprule
+    \textbf{Équipement} & \textbf{Rôle} & \textbf{Aspect sécurité} \\
+    \midrule
+    \textbf{Routeur}    & Routage entre réseaux (Couche 3) & ACL, filtrage de paquets \\
+    \textbf{Commutateur (Switch)} & Commutation dans un LAN (Couche 2) & Port security, désactivation VTP, 802.1X \\
+    \textbf{Pare-feu}   & Filtrage du trafic selon des règles & Stateful inspection, NAT, IPS intégré \\
+    \textbf{IDS/IPS}    & Détection/Prévention d'intrusion & Signatures, anomalies comportementales \\
+    \textbf{Proxy}      & Intermédiaire pour les requêtes web & Filtrage URL, contrôle du contenu \\
+    \bottomrule
+\end{tabular}
+\caption{Équipements réseau et sécurité associée}
+\end{table}
+
+% ------------------------------------------------------------------------------
+\section{Communications Sécurisées}
+% ------------------------------------------------------------------------------
+
+\subsection{Protocoles de Sécurité}
+
+\begin{itemize}
+    \item \textbf{TLS/SSL :} Chiffrement des communications web (HTTPS). TLS~1.3 est le standard actuel.
+    \item \textbf{IPSec :} Sécurisation au niveau IP (chiffrement + authentification). Utilisé dans les VPN.
+    \item \textbf{SSH :} Accès distant sécurisé, tunneling.
+    \item \textbf{SFTP/FTPS :} Transfert de fichiers sécurisé.
+\end{itemize}
+
+\subsection{Certificats Numériques et PKI}
+
+\begin{boxdef}
+\textbf{Certificat numérique :} Document électronique signé par une Autorité de Certification (AC) qui lie une clé publique à une identité. Format standard : X.509.
+
+\textbf{PKI (Public Key Infrastructure) :} Ensemble des politiques, procédures, rôles et technologies permettant de gérer les certificats numériques. Composants : AC Racine, AC Intermédiaire, Annuaire LDAP, CRL (Certificate Revocation List).
+\end{boxdef}
+
+\subsection{VPN (Virtual Private Network)}
+Le VPN crée un tunnel chiffré sur un réseau non sécurisé (Internet), permettant une connexion sécurisée à distance. Deux types principaux :
+\begin{itemize}
+    \item \textbf{VPN Site-à-Site :} Interconnexion permanente de deux sites distants.
+    \item \textbf{VPN Accès distant (SSL/TLS) :} Connexion ponctuelle d'un utilisateur nomade au SI de l'entreprise.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Attaques Réseau}
+% ------------------------------------------------------------------------------
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{3cm}p{5cm}p{4cm}}
+    \toprule
+    \textbf{Attaque} & \textbf{Description} & \textbf{Contre-mesure} \\
+    \midrule
+    \textbf{ARP Spoofing} & Empoisonnement du cache ARP pour intercepter le trafic (MITM). & ARP inspection dynamique (DAI), segmentation VLAN. \\
+    \textbf{DNS Spoofing} & Réponses DNS falsifiées redirigeant vers des serveurs malveillants. & DNSSEC, validation des réponses. \\
+    \textbf{SYN Flood} & Saturation de la table de connexions TCP par des SYN sans ACK final. & SYN cookies, limitation de connexions. \\
+    \textbf{Man-in-the-Middle} & Interception des communications entre deux parties. & Chiffrement TLS, vérification des certificats. \\
+    \textbf{Sniffer/Wireshark} & Capture passive du trafic réseau en clair. & Chiffrement (TLS/SSH), switch au lieu de hub. \\
+    \textbf{Port Scanning} & Cartographie des ports ouverts (Nmap). & Pare-feu, masquage des bannières de services. \\
+    \bottomrule
+\end{tabular}
+\caption{Principales attaques réseau et contre-mesures}
+\end{table}
+
+% ------------------------------------------------------------------------------
+\section{Évaluation des Acquis --- Livre~V}
+% ------------------------------------------------------------------------------
+
+\begin{boxexo}
+\textbf{QCM :}
+\begin{enumerate}
+    \item À quelle couche OSI le protocole IP opère-t-il ? \textbf{(a) 2 \quad (b) 3 \quad (c) 4 \quad (d) 7}
+    \item Lequel des protocoles suivants chiffre les communications ? \textbf{(a) HTTP \quad (b) FTP \quad (c) Telnet \quad (d) SSH}
+    \item Un ensemble d'équipements ou de services exposés à Internet (serveurs web, mail), séparés du réseau interne par un pare-feu, s'appelle : \textbf{(a) VLAN \quad (b) DMZ \quad (c) VPN \quad (d) NAT}
+    \item L'attaque consistant à répondre à des requêtes ARP avec de fausses adresses MAC est : \textbf{(a) SYN Flood \quad (b) DNS Spoofing \quad (c) ARP Spoofing \quad (d) Port Scanning}
+\end{enumerate}
+
+\textbf{Travail Pratique :}\\
+Sur Cisco Packet Tracer, monter le réseau de l'entreprise VISION composé de deux sites distants reliés par un VPN. Configurer une DMZ hébergeant les serveurs web et mail. Tester la connectivité et l'isolation de la DMZ vis-à-vis du LAN interne.
+\end{boxexo}

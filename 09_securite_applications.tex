@@ -1,0 +1,210 @@
+% ==============================================================================
+% Fichier : chapitres/09_securite_applications.tex
+% Livre IX : Sécurité des Applications
+% ==============================================================================
+
+\chapter{Sécurité des Applications}
+\label{chap:securite_apps}
+
+\begin{boxobjectifs}
+\textbf{Objectifs du Livre~IX :} Maîtriser les méthodes de développement sécurisé (SSDLC), l'évaluation de la sécurité des logiciels (boîte noire/grise/blanche), les bases de données (SQL, NoSQL, injections), la programmation orientée objet sécurisée et les principes du code défensif.
+\end{boxobjectifs}
+
+% ------------------------------------------------------------------------------
+\section{Méthodes de Développement}
+% ------------------------------------------------------------------------------
+
+\subsection{Méthodes Classiques}
+Les méthodes séquentielles (cascade, modèle en~V, itératif) imposent une planification détaillée et une documentation complète à chaque phase. Elles manquent de flexibilité face aux changements tardifs d'exigences, notamment les exigences de sécurité découvertes en fin de cycle.
+
+\subsection{Méthodes Agiles}
+Scrum, XP (Extreme Programming) et Kanban privilégient des itérations courtes (sprints), des livraisons fréquentes et l'adaptation continue. Elles facilitent l'intégration de la sécurité à chaque sprint (\textit{Security by Design}).
+
+\subsection{SSDLC (Secure Software Development Life Cycle)}
+\begin{boxdef}
+Le \textbf{SSDLC} est un cycle de développement logiciel qui intègre la sécurité à \textit{chaque étape} : de la définition des exigences à la mise en production et à la maintenance. L'objectif est de «~déplacer la sécurité vers la gauche~» (\textit{Shift Left Security}) pour détecter les vulnérabilités le plus tôt possible, là où leur correction coûte le moins cher.
+\end{boxdef}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{3.5cm}p{8cm}}
+    \toprule
+    \textbf{Phase SSDLC} & \textbf{Activité de Sécurité} \\
+    \midrule
+    Exigences         & Définir les exigences de sécurité (authentication, autorisation, chiffrement). \\
+    Conception        & Modélisation des menaces (STRIDE, DREAD), architecture sécurisée. \\
+    Développement     & Revue de code sécurisé, respect des bonnes pratiques (OWASP). \\
+    Test              & Tests de sécurité (SAST, DAST, pentest, fuzzing). \\
+    Déploiement       & Configuration sécurisée, scan de vulnérabilités pré-production. \\
+    Maintenance       & Gestion des patchs, surveillance continue, réponse aux incidents. \\
+    \bottomrule
+\end{tabular}
+\caption{Activités de sécurité par phase SSDLC}
+\end{table}
+
+% ------------------------------------------------------------------------------
+\section{Évaluation de la Sécurité des Logiciels}
+% ------------------------------------------------------------------------------
+
+\subsection{Vulnérabilités Logicielles Communes}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{4cm}p{8cm}}
+    \toprule
+    \textbf{Vulnérabilité} & \textbf{Description} \\
+    \midrule
+    \textbf{Injection de code} & Exploitation d'une entrée utilisateur pour injecter du code (SQL, shell, JavaScript) dans l'application. \\
+    \textbf{Exposition de données sensibles} & Exposition involontaire de mots de passe, clés d'API, informations personnelles. \\
+    \textbf{Dépassement de tampon (Buffer Overflow)} & Écriture au-delà de la mémoire allouée permettant l'exécution de code arbitraire. \\
+    \textbf{Vulnérabilités des composants tiers} & Bibliothèques/frameworks présentant des CVE connus non patchés. \\
+    \textbf{Manque de validation des entrées} & Absence de filtrage des données saisies par l'utilisateur. \\
+    \textbf{Mauvaise gestion des erreurs} & Messages d'erreur trop verbeux révélant la technologie ou l'architecture interne. \\
+    \bottomrule
+\end{tabular}
+\caption{Vulnérabilités logicielles courantes}
+\end{table}
+
+\subsection{Types de Tests de Sécurité Logicielle}
+
+\begin{itemize}
+    \item \textbf{SAST (Static Application Security Testing) :} Analyse du code source sans exécution. Détecte les vulnérabilités tôt dans le cycle.
+    \item \textbf{DAST (Dynamic Application Security Testing) :} Tests en boîte noire sur l'application en cours d'exécution (ex. : BurpSuite, OWASP ZAP).
+    \item \textbf{IAST (Interactive AST) :} Combinaison de SAST et DAST via des agents instrumentant l'application pendant les tests.
+    \item \textbf{Fuzzing :} Envoi de données aléatoires ou malformées pour provoquer des comportements inattendus.
+\end{itemize}
+
+\subsection{Méthodologie de Test de Sécurité Applicative}
+\begin{enumerate}
+    \item \textbf{Reconnaissance :} Identification de la technologie, des endpoints et de l'architecture (Maltego, Shodan, Nmap, Burp Spider).
+    \item \textbf{Recherche des vulnérabilités :} OWASP~ZAP, SQLMap, DirBuster, Nikto.
+    \item \textbf{Exploitation :} Metasploit, BurpSuite, BeEF (XSS).
+    \item \textbf{Élévation de privilèges :} Mimikatz, PowerSploit, Empire.
+    \item \textbf{Reporting :} Fiches CVSS, impact business, recommandations de correction.
+\end{enumerate}
+
+% ------------------------------------------------------------------------------
+\section{Sécurité des Bases de Données}
+% ------------------------------------------------------------------------------
+
+\subsection{Bases de Données SQL}
+Les SGBD relationnels (MySQL, PostgreSQL, Oracle, SQL Server, MariaDB) organisent les données en tables liées par des clés primaires et étrangères. Les données sont interrogées via le langage SQL.
+
+\begin{boxalert}
+\textbf{Injection SQL :} Vulnérabilité la plus critique des applications web (OWASP \#1). Elle survient lorsque des entrées utilisateur non filtrées sont incorporées dans une requête SQL.
+
+\begin{lstlisting}[language=SQL]
+-- Requête vulnérable
+SELECT * FROM users WHERE username='$input' AND password='$pass';
+
+-- Payload d'attaque : ' OR '1'='1' --
+-- La requête devient :
+SELECT * FROM users WHERE username='' OR '1'='1' --' AND password='...';
+-- Résultat : toujours vraie -> accès accordé sans mot de passe
+\end{lstlisting}
+
+\textbf{Contre-mesure :} Toujours utiliser des \textbf{requêtes préparées (prepared statements)} :
+\begin{lstlisting}[language=PHP]
+$stmt = $pdo->prepare(
+    "SELECT * FROM users WHERE username = ? AND password = ?"
+);
+$stmt->execute([$username, $hashed_password]);
+\end{lstlisting}
+\end{boxalert}
+
+\subsection{Bases de Données NoSQL}
+Les SGBD non relationnels (MongoDB, Redis, Cassandra, CouchBase) utilisent des modèles de données flexibles :
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{3cm}p{4cm}p{4.5cm}}
+    \toprule
+    \textbf{Type NoSQL} & \textbf{Modèle de données} & \textbf{Exemples de SGBD} \\
+    \midrule
+    Clé-valeur       & Paires clé $\Rightarrow$ valeur simples. & Redis, Riak \\
+    Orienté document & Documents JSON / XML. & MongoDB, CouchBase \\
+    Orienté colonnes & Familles de colonnes. & Cassandra, HBase \\
+    Graphe           & Nœuds et relations. & Neo4j, Amazon Neptune \\
+    \bottomrule
+\end{tabular}
+\caption{Types de bases de données NoSQL}
+\end{table}
+
+\subsection{Injections NoSQL}
+Les SGBD NoSQL ne sont pas immunisés contre les injections. Exemple MongoDB :
+\begin{lstlisting}[language=javascript, caption=Injection NoSQL MongoDB]
+// Requête vulnérable (Node.js / Express)
+db.users.find({ username: req.body.user, password: req.body.pass });
+
+// Payload : { "$gt": "" }  -> condition toujours vraie
+// username: { "$gt": "" }, password: { "$gt": "" }  => accès accordé
+\end{lstlisting}
+
+% ------------------------------------------------------------------------------
+\section{Programmation Orientée Objet (POO) et Sécurité}
+% ------------------------------------------------------------------------------
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{3cm}p{8.5cm}}
+    \toprule
+    \textbf{Principe POO} & \textbf{Intérêt pour la sécurité} \\
+    \midrule
+    \textbf{Encapsulation}  & Masque les détails d'implémentation. Protège les attributs sensibles (private/protected). \\
+    \textbf{Héritage}       & Réutilisation des contrôles de sécurité dans les classes dérivées. Risque : héritage de vulnérabilités. \\
+    \textbf{Polymorphisme}  & Permet de substituer des implémentations de chiffrement sans changer l'interface. \\
+    \textbf{Abstraction}    & Interfaces et classes abstraites masquant la complexité cryptographique. \\
+    \textbf{Couplage faible} & Composants indépendants : une vulnérabilité dans un module n'expose pas les autres. \\
+    \textbf{Cohésion forte} & Un module fait une seule chose bien : facilite la revue et le test de sécurité. \\
+    \bottomrule
+\end{tabular}
+\caption{Principes POO appliqués à la sécurité}
+\end{table}
+
+% ------------------------------------------------------------------------------
+\section{Programmation Sécurisée}
+% ------------------------------------------------------------------------------
+
+\begin{boxinfo}
+\textbf{Principes du code défensif (OWASP Secure Coding Practices) :}
+\begin{itemize}
+    \item \textbf{Valider toutes les entrées :} Whitelist (liste des valeurs acceptées), jamais de confiance implicite.
+    \item \textbf{Encoder les sorties :} Prévenir les attaques XSS par échappement HTML/JS.
+    \item \textbf{Authentification forte :} Stocker les mots de passe avec bcrypt/Argon2 (jamais MD5 ou SHA-1 seul).
+    \item \textbf{Gestion des sessions :} Tokens aléatoires et suffisamment longs, expiration, régénération après login.
+    \item \textbf{Contrôle d'accès :} Vérifier les autorisations côté serveur, pas seulement côté client.
+    \item \textbf{Cryptographie :} Utiliser les bibliothèques standard (OpenSSL, libsodium), ne jamais implémenter ses propres algorithmes.
+    \item \textbf{Gestion des erreurs :} Ne jamais exposer de détails techniques dans les messages d'erreur utilisateur.
+    \item \textbf{Journalisation :} Enregistrer les événements de sécurité (tentatives de connexion, accès refusés) sans consigner de données sensibles.
+    \item \textbf{Sécurité des composants tiers :} Tenir à jour les dépendances (npm audit, pip check, OWASP Dependency-Check).
+\end{itemize}
+\end{boxinfo}
+
+% ------------------------------------------------------------------------------
+\section{Évaluation des Acquis --- Livre~IX}
+% ------------------------------------------------------------------------------
+
+\begin{boxexo}
+\textbf{QCM :}
+\begin{enumerate}
+    \item Le SSDLC est un cycle de développement qui : \textbf{(a) Accélère le développement \quad (b) Intègre la sécurité à chaque étape \quad (c) Se concentre sur la performance \quad (d) Élimine les tests}
+    \item Une vulnérabilité logicielle est : \textbf{(a) Une fonctionnalité utile \quad (b) Une faiblesse pouvant être exploitée \quad (c) Une erreur corrigée par un patch \quad (d) Un composant tiers}
+    \item La meilleure contre-mesure contre les injections SQL est : \textbf{(a) Utiliser NoSQL \quad (b) Désactiver les logs \quad (c) Utiliser des requêtes préparées \quad (d) Chiffrer la base de données}
+    \item L'encapsulation en POO contribue à la sécurité en : \textbf{(a) Accélérant l'exécution \quad (b) Masquant les attributs et implémentations sensibles \quad (c) Permettant l'héritage multiple \quad (d) Simplifiant l'interface}
+    \item Le DAST (Dynamic Application Security Testing) teste : \textbf{(a) Le code source statique \quad (b) L'application en cours d'exécution \quad (c) La base de données uniquement \quad (d) L'infrastructure réseau}
+    \item Le principe «~Shift Left Security~» signifie : \textbf{(a) Déplacer les tests en fin de projet \quad (b) Intégrer la sécurité dès les premières phases du développement \quad (c) Sécuriser uniquement l'interface utilisateur \quad (d) Réduire le budget sécurité}
+\end{enumerate}
+
+\textbf{Travail Pratique :}\\
+Réaliser une évaluation complète de la sécurité de l'application de gestion des notes de l'ENSPY :
+\begin{enumerate}
+    \item Identifier les vulnérabilités OWASP~Top~10 présentes.
+    \item Tester l'injection SQL sur les formulaires de connexion et de recherche.
+    \item Proposer et implémenter les corrections (requêtes préparées, validation des entrées, hachage bcrypt).
+    \item Rédiger un rapport avec fiches CVSS pour chaque vulnérabilité identifiée.
+\end{enumerate}
+\end{boxexo}

@@ -1,0 +1,88 @@
+% ==============================================================================
+% Fichier : chapitres/06_gestion_identites_acces.tex
+% Livre VI : Gestion des Identités et des Accès
+% ==============================================================================
+
+\chapter{Gestion des Identités et des Accès}
+\label{chap:iam}
+
+\begin{boxobjectifs}
+\textbf{Objectifs du Livre~VI :} Maîtriser le cadre IAAA, les méthodes d'authentification, les modèles de contrôle d'accès et l'implémentation des contrôles dans les organisations.
+\end{boxobjectifs}
+
+% ------------------------------------------------------------------------------
+\section{Le Cadre IAAA}
+% ------------------------------------------------------------------------------
+
+\begin{boxdef}
+\begin{itemize}
+    \item \textbf{Identification :} Une entité prétend posséder une identité (ex. : saisie d'un nom d'utilisateur).
+    \item \textbf{Authentification :} Vérification de cette identité (ex. : mot de passe, OTP, biométrie).
+    \item \textbf{Autorisation :} Détermination des droits et privilèges accordés à l'identité authentifiée.
+    \item \textbf{Accountability (Imputabilité) :} Traçabilité de toutes les actions effectuées par l'identité (journalisation, audit).
+\end{itemize}
+\end{boxdef}
+
+% ------------------------------------------------------------------------------
+\section{Méthodes d'Authentification}
+% ------------------------------------------------------------------------------
+
+\begin{table}[H]
+\centering
+\begin{tabular}{p{3.5cm}p{4cm}p{4cm}}
+    \toprule
+    \textbf{Facteur} & \textbf{Principe} & \textbf{Exemples} \\
+    \midrule
+    \textbf{Ce que tu connais} & Secret mémorisé. & Mot de passe, code PIN, phrase secrète. \\
+    \textbf{Ce que tu possèdes} & Objet physique en possession. & Token matériel (RSA SecurID), carte à puce, OTP par SMS. \\
+    \textbf{Ce que tu es} & Caractéristique biologique unique. & Empreinte digitale, iris, reconnaissance faciale. \\
+    \textbf{Authentification Multi-Facteur (MFA)} & Combinaison de 2 facteurs ou plus. & Mot de passe + OTP SMS (ex. : Google Authenticator). \\
+    \bottomrule
+\end{tabular}
+\caption{Facteurs d'authentification}
+\end{table}
+
+\begin{boxalert}
+\textbf{Bonne pratique :} Le MFA est aujourd'hui indispensable pour tous les accès sensibles (VPN, messagerie professionnelle, accès administrateur). Un simple mot de passe n'est plus suffisant face aux attaques de phishing et de credential stuffing.
+\end{boxalert}
+
+% ------------------------------------------------------------------------------
+\section{Implémentation des Contrôles d'Accès}
+% ------------------------------------------------------------------------------
+
+Les contrôles d'accès peuvent être implantés à trois niveaux :
+\begin{itemize}
+    \item \textbf{Physique :} Serrures, badges, caméras, sas de sécurité.
+    \item \textbf{Logique :} ACL, pare-feu, chiffrement, comptes utilisateurs, MFA.
+    \item \textbf{Administratif :} Politiques, procédures, formation, séparation des fonctions.
+\end{itemize}
+
+Le choix des contrôles doit être proportionné au niveau de risque et au budget de l'organisation (\textit{risk-based approach}). L'utilisation du \textbf{SSO (Single Sign-On)} simplifie la gestion des identités tout en maintenant un niveau de sécurité élevé.
+
+% ------------------------------------------------------------------------------
+\section{Modèles de Contrôles d'Accès (Rappel)}
+% ------------------------------------------------------------------------------
+
+Les modèles MAC, DAC, RBAC et ABAC ont été détaillés au Livre~III. Pour la gestion des identités, on retient particulièrement :
+\begin{itemize}
+    \item \textbf{RBAC} comme standard de facto en entreprise : un utilisateur hérite des droits de son rôle (Comptable, Admin, Auditeur, etc.).
+    \item \textbf{Principe du moindre privilège} : n'accorder que les droits strictement nécessaires à la tâche.
+    \item \textbf{Revue périodique des accès} : révocation rapide des droits lors de départ ou changement de poste.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Évaluation des Acquis --- Livre~VI}
+% ------------------------------------------------------------------------------
+
+\begin{boxexo}
+\textbf{QCM :}
+\begin{enumerate}
+    \item Qu'est-ce que l'IAAA ? \textbf{(a) Un protocole réseau \quad (b) Un modèle de contrôle d'accès \quad (c) Identification, Authentification, Autorisation, Accountability \quad (d) Un algorithme de chiffrement}
+    \item L'authentification à deux facteurs combine : \textbf{(a) Deux mots de passe \quad (b) Un mot de passe et une empreinte digitale \quad (c) Deux cartes à puce \quad (d) Deux adresses email}
+    \item Le principe du moindre privilège consiste à : \textbf{(a) Donner le maximum de droits \quad (b) N'accorder que les droits strictement nécessaires \quad (c) Partager les comptes entre collègues \quad (d) Désactiver l'authentification}
+    \item SSO signifie : \textbf{(a) Secure Socket Option \quad (b) Single Sign-On \quad (c) System Security Object \quad (d) Secure Shell Operations}
+\end{enumerate}
+
+\textbf{Travail Pratique :}\\
+Configurer un service d'authentification LDAP avec des groupes RBAC (Admin, Utilisateur, Auditeur) et tester les niveaux d'accès sur un répertoire partagé.
+\end{boxexo}
