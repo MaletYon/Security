@@ -1,5 +1,5 @@
 % ==============================================================================
-% Fichier     : Cours.tex
+% Fichier     : Cours_Securite.tex
 % Titre       : Sécurité Informatique
 % Auteur      : MINKA MI NGUIDJOÏ Thierry Emmanuel
 %               Sr-Eng, Sr-Auditor, GRC Expert
@@ -8,13 +8,23 @@
 %               Université de Yaoundé~I
 % Niveau      : Humanités Numériques, Niveau~3 (Licence 3)
 % Année       : 2025--2026
-% Compilateur : XeLaTeX ou pdfLaTeX + Biber (Overleaf)
+% Description : Fichier principal du cours. Orchestre tous les chapitres,
+%               la bibliographie et les éléments de couverture.
+% Compilateur : pdflatex + biber (ou lualatex recommandé)
+%               → lualatex Cours && biber Cours && lualatex Cours && lualatex Cours
 % ==============================================================================
 
-\documentclass[12pt, a4paper, twoside, openright]{memoir}
+\documentclass[12pt, a4paper, twoside, openright]{book}
 
-% --- Feuille de style commune ---
+% ==============================================================================
+% CHARGEMENT DE LA FEUILLE DE STYLE
+% ==============================================================================
 \usepackage{Style_cours}
+
+% ==============================================================================
+% BIBLIOGRAPHIE
+% ==============================================================================
+\addbibresource{bibliographie.bib}
 
 % ==============================================================================
 % MÉTADONNÉES PDF
@@ -22,30 +32,9 @@
 \hypersetup{
     pdftitle  = {Sécurité Informatique},
     pdfauthor = {MINKA MI NGUIDJOÏ Thierry Emmanuel},
-    pdfsubject= {Cours de Sécurité Informatique — Niveau Licence 3, ENSPY},
-}
-
-% ==============================================================================
-% EN-TÊTES ET PIEDS DE PAGE
-% ==============================================================================
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[LE]{\small\textcolor{CouleurPrimaire}{\textbf{Sécurité Informatique}}}
-\fancyhead[RO]{\small\textcolor{CouleurPrimaire}{\nouppercase{\leftmark}}}
-\fancyhead[RE,LO]{\small\textcolor{CouleurAccent}{\textbf{ENSPY --- UY~I}}}
-\fancyfoot[C]{\small\textcolor{gray}{\thepage}}
-\fancyfoot[LE]{\small\textcolor{gray}{Thierry MINKA, Sr-Eng, Sr-Auditor, GRC Expert}}
-\fancyfoot[RO]{\small\textcolor{gray}{Année académique 2023--2024}}
-\renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\footrulewidth}{0.2pt}
-
-% ==============================================================================
-% STYLE DE PAGE DE CHAPITRE
-% ==============================================================================
-\fancypagestyle{plain}{
-  \fancyhf{}
-  \fancyfoot[C]{\small\textcolor{gray}{\thepage}}
-  \renewcommand{\headrulewidth}{0pt}
+    pdfsubject= {Support de Cours— Sécurité SI, Cybersécurité, Gestion des Risques},
+    pdfkeywords={Sécurité SI, Cybersécurité, Risk Management, Cryptographie,
+                 Sécurité réseau, Université de Yaoundé I}
 }
 
 % ==============================================================================
@@ -54,126 +43,351 @@
 \begin{document}
 
 % ------------------------------------------------------------------------------
-% PAGE DE TITRE
+% 1. PAGE DE TITRE (1ère DE COUVERTURE)
 % ------------------------------------------------------------------------------
-\begin{titlingpage}
+\begin{titlepage}
+\thispagestyle{empty}
+\pagecolor{CouleurPrimaire}
+
 \begin{tikzpicture}[remember picture, overlay]
-  % Bande supérieure
-  \fill[CouleurPrimaire]
-    (current page.north west) rectangle
-    ([yshift=-3.5cm]current page.north east);
-  % Filet doré
-  \fill[CouleurAccent]
-    ([yshift=-3.5cm]current page.north west) rectangle
-    ([yshift=-3.8cm]current page.north east);
-  % Bande inférieure
-  \fill[CouleurPrimaire]
-    (current page.south west) rectangle
-    ([yshift=2.5cm]current page.south east);
-  \fill[CouleurAccent]
-    ([yshift=2.5cm]current page.south west) rectangle
-    ([yshift=2.8cm]current page.south east);
+    % Bande dorée en bas de couverture
+    \fill[CouleurAccent]
+        (current page.south west) rectangle
+        ([yshift=2.2cm] current page.south east);
+    % Ligne décorative en haut
+    \fill[CouleurAccent]
+        ([yshift=-1.5cm] current page.north west) rectangle
+        ([yshift=-1.8cm] current page.north east);
+    % Élément graphique décoratif (carré tourné)
+    \fill[white, opacity=0.04]
+        ([xshift=8cm, yshift=-6cm] current page.north west)
+        -- ++(5,0) -- ++(0,-5) -- ++(-5,0) -- cycle;
+    \fill[white, opacity=0.06]
+        ([xshift=9cm, yshift=-7cm] current page.north west)
+        -- ++(6,0) -- ++(0,-6) -- ++(-6,0) -- cycle;
 \end{tikzpicture}
 
-\vspace*{0.8cm}
+\vspace*{1.5cm}
 
-% --- Bloc institutionnel bilingue ---
+% Logo institutionnel (à décommenter si disponible)
+% \begin{center}
+%     \includegraphics[height=2.5cm]{figures/logo_uy1.png}
+% \end{center}
+
 \begin{center}
-  {\small\textbf{\textcolor{white}{REPUBLIQUE DU CAMEROUN \quad --- \quad REPUBLIC OF CAMEROON}}}\\[0.15cm]
-  {\small\textcolor{white}{Paix - Travail - Patrie \quad --- \quad Peace - Work - Fatherland}}\\[0.3cm]
-  \textcolor{CouleurAccent}{\rule{12cm}{0.5pt}}\\[0.3cm]
-  {\small\textcolor{white}{Université de Yaoundé~I \quad|\quad University of Yaounde~I}}\\
-  {\small\textcolor{white}{École Nationale Supérieure Polytechnique \quad|\quad National Advanced School of Engineering}}\\[0.2cm]
-  \textcolor{CouleurAccent}{\rule{12cm}{0.5pt}}\\[0.2cm]
-  {\small\textsc{\textcolor{white}{Département de Génie Informatique \quad|\quad Computer Sciences Department}}}
+    {\color{white!80!gray}\small\scshape
+        Université de Yaoundé~I~·~Ecole Nationale Supérieure Polytechnique~·~Département de Génie Informatique}\\[0.4ex]
+    {\color{CouleurAccent}\rule{0.55\linewidth}{0.8pt}}
 \end{center}
 
 \vspace{1.5cm}
 
 \begin{center}
-  {\LARGE\bfseries\textcolor{CouleurPrimaire}{HUMANITÉS NUMÉRIQUES --- NIVEAU 3}}\\[0.4cm]
-  \textcolor{CouleurAccent}{\rule{10cm}{1pt}}\\[0.5cm]
-  {\Huge\bfseries\textcolor{CouleurPrimaire}{SÉCURITÉ INFORMATIQUE}}\\[0.3cm]
-  {\Large\textcolor{CouleurPrimaire}{Fil Conducteur du Cours}}\\[0.5cm]
-  \textcolor{CouleurAccent}{\rule{10cm}{1pt}}
+    {\color{white!60!gray}\footnotesize\scshape
+        support de cours}\\[1ex]
+    {\color{white}\fontsize{34}{42}\selectfont\bfseries
+        Sécurité Informatique}\\[1.5ex]
+    {\color{CouleurAccent}\Large\itshape
+        Fondamentaux, Pratiques et Gouvernance de la Cybersécurité}
 \end{center}
 
-\vspace{2.5cm}
+\vspace{2cm}
 
 \begin{center}
-  {\large\textit{Par :}}\\[0.4cm]
-  {\Large\bfseries\textcolor{CouleurPrimaire}{MINKA MI NGUIDJOÏ Thierry Emmanuel}}\\[0.2cm]
-  {\normalsize Sr-Eng \;|\; Sr-Auditor \;|\; GRC Expert}\\[0.1cm]
-  {\normalsize CISA \;|\; CISM \;|\; CGEIT \;|\; CRISC \;|\; CDPSE}\\[0.4cm]
-  {\small\textit{Chercheur, Laboratoire LIMSI — Université de Yaoundé~I}}\\
-  {\small\textit{Doctorant sous la direction du Pr Flavien Serge Mani Onana}}\\
-  {\small\textit{et du Pr Thomas Djotio Ndié}}
+    {\color{white!70!gray}\small
+        \ding{43}\quad Humanités Numériques — Niveau 3 (Licence 3)}\\[0.5ex]
+    {\color{white!70!gray}\small
+        \ding{44}\quad Security and Risk Management ~·~ Cryptographie ~·~ Sécurité des Réseaux}\\[0.5ex]
+    {\color{white!70!gray}\small
+        \ding{228}\quad Gestion des Identités ~·~ Tests d'Intrusion ~·~ Sécurité des Applications}
 \end{center}
 
 \vfill
 
 \begin{center}
-  \textcolor{CouleurAccent}{\rule{10cm}{0.5pt}}\\[0.3cm]
-  {\large\textbf{\textcolor{CouleurPrimaire}{Année académique 2023--2024}}}
+    {\color{CouleurAccent}\rule{0.7\linewidth}{1.2pt}}\\[1.2ex]
+    {\color{white}\large\bfseries MINKA MI NGUIDJOÏ Thierry Emmanuel}\\[0.4ex]
+    {\color{white!80!gray}\small
+        CISA~·~CISM~·~CGEIT~·~CRISC~·~CDPSE~·~ISO 27001~·~ISO 22301~·~ISO 9001}\\[0.3ex]
+    {\color{white!70!gray}\footnotesize\itshape
+        Chercheur — LIMSI — ENSP, Université de Yaoundé~I}\\[0.3ex]
+    {\color{white!70!gray}\footnotesize\itshape
+        Sr-Eng~·~Sr-Auditor~·~GRC Expert~·~Cryptographe}\\[1.2ex]
+    {\color{CouleurAccent}\rule{0.7\linewidth}{1.2pt}}
 \end{center}
 
-\vspace{1.2cm}
-\end{titlingpage}
+\vspace{0.6cm}
+
+\begin{center}
+    {\color{white!60!gray}\small Année académique 2025--2026}
+\end{center}
+
+\afterpage{\nopagecolor}
+\end{titlepage}
 
 % ------------------------------------------------------------------------------
-% PAGES PRÉLIMINAIRES
+% 2. PAGE DE DROITS / VERSO DE LA COUVERTURE
 % ------------------------------------------------------------------------------
-\frontmatter
-\tableofcontents
 \clearpage
+\thispagestyle{empty}
+\vspace*{\fill}
 
-\input{chapitres/00_introduction}
+\begin{center}
+    \begin{minipage}{0.78\textwidth}
+        \footnotesize\color{CouleurBordInfo}
+        \begin{center}
+            {\bfseries\color{CouleurPrimaire}
+                Sécurité Informatique}\\[0.4ex]
+            {\itshape Fondamentaux, Pratiques et Gouvernance de la Cybersécurité}
+        \end{center}
+        \vspace{0.8ex}
+        \hrule
+        \vspace{0.8ex}
+        \textbf{Auteur :} MINKA MI NGUIDJOÏ Thierry Emmanuel\\
+        \textbf{Institution :} Université de Yaoundé~I — LIMSI\\
+        \textbf{Niveau :} Humanités Numériques — Niveau 3 (Licence 3)\\
+        \textbf{Année :} 2025--2026\\[0.5ex]
+        Ce document est un support de cours universitaire rédigé à des fins
+        pédagogiques. Toute reproduction partielle ou totale à des fins commerciales
+        est interdite sans l'autorisation écrite de l'auteur. Les références à des
+        produits, organisations ou normes sont citées à titre pédagogique uniquement.\\[0.5ex]
+        Les certifications CISA, CISM, CGEIT, CRISC et CDPSE sont des marques
+        déposées de l'\textbf{ISACA} (\textit{Information Systems Audit and Control Association}).\\[0.5ex]
+        
+        \hrule
+        \vspace{0.5ex}
+        {\centering\itshape
+        «~La sécurité n'est jamais un état définitif, mais une exigence permanente de vigilance.~»}
+    \end{minipage}
+\end{center}
+
+\vspace*{\fill}
 
 % ------------------------------------------------------------------------------
-% CORPS DU COURS — 9 LIVRES
+% 3. DÉDICACE (IDENTIQUE AU MODÈLE, ADAPTATION DU TEXTE)
 % ------------------------------------------------------------------------------
+\clearpage
+\thispagestyle{empty}
+\vspace*{3cm}
+\begin{flushright}
+    \begin{minipage}{0.6\textwidth}
+        \itshape\large\color{CouleurPrimaire}
+        À celles et ceux qui veillent chaque jour\\
+        sur la confiance numérique que nous accordons\\
+        aux systèmes qui nous gouvernent.\\[1.5ex]
+        \normalsize\normalfont\color{CouleurAccent}
+        Et à tous les étudiants en sécurité\\
+        qui liront ces pages avec la rigueur\\
+        qu'ils apporteront demain à leur métier.
+    \end{minipage}
+\end{flushright}
+
+% ------------------------------------------------------------------------------
+% 4. REMERCIEMENTS (IDENTIQUE AU MODÈLE, ADAPTATION DU TEXTE)
+% ------------------------------------------------------------------------------
+\clearpage
+\thispagestyle{empty}
+\chapter*{Remerciements}
+\addcontentsline{toc}{chapter}{Remerciements}
+
+La conception de ce cours a bénéficié de l'expérience conjointe du chercheur et du praticien. L'auteur exprime sa reconnaissance à \textbf{tous les relecteurs anonymes et non} qui ont contribué à l'enrichissement de cette version. 
+Une mention spéciale pour \textbf{le Professeur Flavien Serge Mani Onana} et \textbf{le Professeur Thomas Djotio Ndié}, pour leur encadrement qui nous a permis de confronter plusieurs de nos idées ici développées avec la réalité des exigences académiques et professionnelles.
+
+De même, le Directeur du Contrôle Budgétaire au ministère des finances, \textbf{Madame Tabenyang Augusta épouse Ndjock Arrey}, a été d'un appui significatif dans la rédaction de ce cours, son professionnalisme et sa disponibilité forcent l'admiration.
+
+La matière de ce cours a été nourrie par les missions menées au sein des \textbf{Services du Contrôle Supérieur de l'État}, où la sécurité des systèmes d'information n'est pas une abstraction académique mais une responsabilité institutionnelle quotidienne. De même des prestations comme consultant individuel auprès d'entreprises nationales et internationales, ce qui lui donne une dimension transnationale.
+
+À nos étudiants ...
+
+% ------------------------------------------------------------------------------
+% 5. TABLE DES MATIÈRES
+% ------------------------------------------------------------------------------
+\clearpage
+\tableofcontents
+
+% ------------------------------------------------------------------------------
+% 6. LISTE DES FIGURES (si nécessaire)
+% ------------------------------------------------------------------------------
+\clearpage
+\listoffigures
+\addcontentsline{toc}{chapter}{Liste des figures}
+
+% ------------------------------------------------------------------------------
+% 7. LISTE DES TABLEAUX
+% ------------------------------------------------------------------------------
+\listoftables
+\addcontentsline{toc}{chapter}{Liste des tableaux}
+
+% ------------------------------------------------------------------------------
+% 8. LISTE DES CODES SOURCE
+% ------------------------------------------------------------------------------
+\lstlistoflistings
+\addcontentsline{toc}{chapter}{Liste des codes source}
+
+% ==============================================================================
+% CORPS DU COURS
+% ==============================================================================
 \mainmatter
 
-% ---- Livre I : Définitions, Concepts et Bases --------------------------------
+% --- Introduction Générale ---
+\input{chapitres/00_introduction}
+
+% -------------------------------------------------------------------
+% PARTIE I — Définitions, Concepts et Bases
+% -------------------------------------------------------------------
 \part{Définitions, Concepts et Bases pour le Cours}
+
+% Chapitre 1 — Définitions et concepts fondamentaux
 \input{chapitres/01_definitions_concepts}
 
-% ---- Livre II : Security and Risk Management ---------------------------------
+% -------------------------------------------------------------------
+% PARTIE II — Security and Risk Management
+% -------------------------------------------------------------------
 \part{Security and Risk Management}
+
+% Chapitre 2 — Gestion des risques de sécurité
 \input{chapitres/02_security_risk_management}
 
-% ---- Livre III : Sécurité des Actifs -----------------------------------------
+% -------------------------------------------------------------------
+% PARTIE III — Sécurité des Actifs
+% -------------------------------------------------------------------
 \part{Sécurité des Actifs}
+
+% Chapitre 3 — Classification et protection des actifs
 \input{chapitres/03_securite_actifs}
 
-% ---- Livre IV : Ingénierie et Architecture de Sécurité -----------------------
+% -------------------------------------------------------------------
+% PARTIE IV — Ingénierie et Architecture de Sécurité
+% -------------------------------------------------------------------
 \part{Ingénierie et Architecture de Sécurité}
+
+% Chapitre 4 — Principes d'architecture sécurisée
 \input{chapitres/04_ingenierie_architecture}
 
-% ---- Livre V : Réseaux et Communications -------------------------------------
+% -------------------------------------------------------------------
+% PARTIE V — Réseaux et Communications
+% -------------------------------------------------------------------
 \part{Réseaux et Communications}
+
+% Chapitre 5 — Sécurité des réseaux et communications
 \input{chapitres/05_reseaux_communications}
 
-% ---- Livre VI : Gestion des Identités et des Accès ---------------------------
+% -------------------------------------------------------------------
+% PARTIE VI — Gestion des Identités et des Accès
+% -------------------------------------------------------------------
 \part{Gestion des Identités et des Accès}
+
+% Chapitre 6 — IAM et contrôle d'accès
 \input{chapitres/06_gestion_identites_acces}
 
-% ---- Livre VII : Évaluation et Tests de la Sécurité --------------------------
+% -------------------------------------------------------------------
+% PARTIE VII — Évaluation et Tests de la Sécurité
+% -------------------------------------------------------------------
 \part{Évaluation et Tests de la Sécurité}
+
+% Chapitre 7 — Tests d'intrusion et évaluation
 \input{chapitres/07_evaluation_tests}
 
-% ---- Livre VIII : Opérations de Sécurité -------------------------------------
+% -------------------------------------------------------------------
+% PARTIE VIII — Opérations de Sécurité
+% -------------------------------------------------------------------
 \part{Opérations de Sécurité}
+
+% Chapitre 8 — Gestion des opérations de sécurité
 \input{chapitres/08_operations_securite}
 
-% ---- Livre IX : Sécurité des Applications ------------------------------------
+% -------------------------------------------------------------------
+% PARTIE IX — Sécurité des Applications
+% -------------------------------------------------------------------
 \part{Sécurité des Applications}
+
+% Chapitre 9 — Développement sécurisé et DevSecOps
 \input{chapitres/09_securite_applications}
 
-% ------------------------------------------------------------------------------
-% PAGES FINALES
-% ------------------------------------------------------------------------------
+% --- Conclusion Générale ---
+\input{chapitres/00_conclusion}
+
+% ==============================================================================
+% MATIÈRE POSTLIMINAIRE
+% ==============================================================================
 \backmatter
+
+% --- Bibliographie ---
+\clearpage
+\printbibliography[
+    heading=bibintoc,
+    title={Bibliographie et Références}
+]
+
+% --- À Propos de l'Auteur ---
+\clearpage
 \input{chapitres/Apropos_Auteur}
 
+% --- Index ---
+\clearpage
+\printindex
+\addcontentsline{toc}{chapter}{Index}
+
+% ==============================================================================
+% 4ÈME DE COUVERTURE (IDENTIQUE AU MODÈLE)
+% ==============================================================================
+\clearpage
+\thispagestyle{empty}
+\pagecolor{CouleurPrimaire}
+
+\begin{tikzpicture}[remember picture, overlay]
+    \fill[CouleurAccent]
+        (current page.south west) rectangle
+        ([yshift=1.8cm] current page.south east);
+    \fill[CouleurAccent]
+        ([yshift=-1.4cm] current page.north west) rectangle
+        ([yshift=-1.7cm] current page.north east);
+\end{tikzpicture}
+
+\vspace*{2.5cm}
+
+\begin{center}
+    {\color{CouleurAccent}\rule{0.6\linewidth}{1pt}}\\[1.5ex]
+    {\color{white}\Large\bfseries À propos de ce cours}\\[1.5ex]
+    {\color{CouleurAccent}\rule{0.6\linewidth}{1pt}}
+\end{center}
+
+\vspace{1cm}
+
+\begin{center}
+\begin{minipage}{0.75\textwidth}
+\color{white!85!gray}\setstretch{1.4}
+Ce cours propose une approche intégrée et rigoureuse de la sécurité informatique, articulant les fondamentaux théoriques, les pratiques opérationnelles et les référentiels internationaux reconnus (ISO 27001, NIST, CISSP).
+
+\medskip
+
+Il s'adresse aux étudiants en informatique souhaitant acquérir les compétences conceptuelles et opérationnelles requises pour concevoir, mettre en œuvre et évaluer la sécurité des systèmes d'information avec professionnalisme.
+
+\medskip
+
+Les thèmes abordés couvrent la gestion des risques, la cryptographie, la sécurité des réseaux, la gestion des identités et des accès, les tests d'intrusion, la sécurité des applications et la gouvernance de la cybersécurité.
+\end{minipage}
+\end{center}
+
+\vfill
+
+\begin{center}
+    {\color{CouleurAccent}\rule{0.7\linewidth}{1.2pt}}\\[1.2ex]
+    {\color{white}\large\bfseries MINKA MI NGUIDJOÏ Thierry Emmanuel}\\[0.4ex]
+    {\color{white!80!gray}\small
+        CISA~·~CISM~·~CGEIT~·~CRISC~·~CDPSE~·~ISO 27001~·~ISO 22301~·~ISO 9001}\\[0.3ex]
+    {\color{white!70!gray}\footnotesize\itshape
+        Chercheur — LIMSI — ENSP, Université de Yaoundé~I}\\[0.3ex]
+    {\color{white!70!gray}\footnotesize\itshape
+        Sr-Eng~·~Sr-Auditor~·~GRC Expert~·~Cryptographe}\\[1.2ex]
+    {\color{CouleurAccent}\rule{0.7\linewidth}{1.2pt}}
+\end{center}
+
+\vspace{1cm}
+
+\afterpage{\nopagecolor}
+
 \end{document}
+% ==============================================================================
+% Fin de Cours_Securite.tex
+% ==============================================================================
